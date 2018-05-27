@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class ExPanel extends JPanel {
-	public static final int TXT_X=120;
-	public static final int TXT_Y=140;
+	private final int SIZE=800;
+	private final int SQUARESIDE = SIZE/8;
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -14,7 +14,7 @@ public class ExPanel extends JPanel {
 		
 		for(i = 0; i < 8; i++) {
 			for(j = 0; j < 8; j++) {
-				Rectangle2D rt = new Rectangle2D.Double(i*100,j*100,100,100);
+				Rectangle2D rt = new Rectangle2D.Double(i*SQUARESIDE,j*SQUARESIDE,SQUARESIDE,SQUARESIDE);
 				
 				g2d.setPaint(Color.WHITE);
 				if(i%2==0){
@@ -31,7 +31,6 @@ public class ExPanel extends JPanel {
 				g2d.fill(rt);
 			}
 		}
-		
 		
 	}
 }
