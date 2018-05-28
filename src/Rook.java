@@ -9,18 +9,30 @@ public class Rook extends Piece{
 	{
 		int currentRow = m_pos.getRow();
 		int currentColumn = m_pos.getColumn();
+		int i;
 		Position newPos;
 		
 		possiblePositions.clear();
 
-		for(int i = 1; i < 9; i++) {
-			newPos = new Position(currentRow, i);
-			if(i != currentColumn && Board.getBoard().sqrState(newPos) == 0)
+		i = 1;
+		newPos = new Position(currentRow, i);
+		while(Board.getBoard().sqrState(newPos) == 0 && i < 9) {
+			if(i != currentColumn)
 				possiblePositions.add(newPos);
 			
-			newPos = new Position(i, currentColumn);
+			i++;
+			newPos = new Position(currentRow, i);
+		}
+		
+		i = 1;
+		newPos = new Position(i, currentColumn);
+		while(Board.getBoard().sqrState(newPos) == 0 && i < 9) {
+			
 			if(i != currentRow && Board.getBoard().sqrState(newPos) == 0)
 				possiblePositions.add(newPos);
+			
+			i++;
+			newPos = new Position(i, currentColumn);
 		}
 	}
 }

@@ -13,11 +13,7 @@ public class Bishop extends Piece{
 		possiblePositions.clear();
 
 		for(int i = 1; i < 9; i++) {
-			if(i != currentColumn)
-				possiblePositions.add(new Position(currentRow, i));
 			
-			if(i != currentRow)
-				possiblePositions.add(new Position(i, currentColumn));
 		}
 	}
 }
