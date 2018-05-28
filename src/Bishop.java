@@ -9,11 +9,37 @@ public class Bishop extends Piece{
 	{
 		int currentRow = m_pos.getRow();
 		int currentColumn = m_pos.getColumn();
+		int i;
+		Position newPos = new Position();
 		
 		possiblePositions.clear();
-
-		for(int i = 1; i < 9; i++) {
-			
+		
+		i = 1;
+		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		{
+			possiblePositions.add(newPos);
+			i++;
+		}
+		
+		i = -1;
+		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		{
+			possiblePositions.add(newPos);
+			i--;
+		}
+		
+		i = 1;
+		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) == 0)
+		{
+			possiblePositions.add(newPos);
+			i++;
+		}
+		
+		i = 1;
+		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		{
+			possiblePositions.add(newPos);
+			i++;
 		}
 	}
 }
