@@ -1,7 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
@@ -94,8 +99,47 @@ public class Board extends JPanel {
 				}
 				
 				g2d.fill(rt);
+				
+				
+				if(bMatrix[i][j] != null){
+					Image img;
+					String imgName;
+					String imgType = "";
+					String imgColor;
+					
+					// Guardando a letra do arquivo que referencia a cor
+					if(bMatrix[i][j].getColor() == 1)
+						imgColor = "b";
+					else
+						imgColor = "p";
+					
+					// Quardando os nomes referentes ao arquivo de cada peça
+					if(bMatrix[i][j] instanceof Rook)
+						imgType = "torre";
+					else if(bMatrix[i][j] instanceof Bishop)
+						imgType = "bispo";
+					else if(bMatrix[i][j] instanceof King)
+						imgType = "rei";
+					else if(bMatrix[i][j] instanceof Knight)
+						imgType = "cavalo";
+					else if(bMatrix[i][j] instanceof Pawn)
+						imgType = "peao";
+					else if(bMatrix[i][j] instanceof Queen)
+						imgType = "dama";
+					
+					
+					imgName = imgColor + '_' + imgType + ".gif";
+					System.out.println(imgName);
+					try {
+						img = ImageIO.read(new File(imgName));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
+		
+		
 		
 	}
 }

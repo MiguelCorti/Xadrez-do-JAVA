@@ -8,6 +8,8 @@ public abstract class Piece {
 	
 	public Piece(int row, int column, int color)
 	{
+		m_pos = new Position();
+		
 		m_pos.setRow(row);
 		m_pos.setColumn(column);
 		m_color = color;

@@ -1,6 +1,4 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
+import javax.swing.JFrame;
 
 public class XadrezMain {
 
@@ -10,8 +8,6 @@ public class XadrezMain {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(Board.getBoard());
-		
-		
 	}
 
 }
