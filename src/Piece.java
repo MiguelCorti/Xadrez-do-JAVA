@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 
 public abstract class Piece {
-	public int m_column;
-	public int m_row;
+	public Position m_pos;
 	
 	ArrayList<Position> possiblePositions = new ArrayList();
+	
+	protected abstract void updatePossiblePositions();
 	
 	public boolean checkMovementTo(int column, int row) {
 		
@@ -12,10 +14,5 @@ public abstract class Piece {
 	public void moveTo(){
 		
 	}
-	
-	
-	
-	
-	
 	
 }

@@ -1,14 +1,12 @@
 
 public class Rook extends Piece{
 	
-	public boolean checkMovementTo(int column, int row){
-		if(m_column == column) {
-			return true;
-		}
-		else if(m_row == row) {
-			return true;
-		}
+	protected void updatePossiblePositions()
+	{
+		possiblePositions.clear();
 		
-		return false;
+		for(int column = 1; column < 9; column++) {
+			possiblePositions.add(new Position);
+		}
 	}
 }
