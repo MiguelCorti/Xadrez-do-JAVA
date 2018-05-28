@@ -10,6 +10,8 @@ public class XadrezMain {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(new ExPanel());
+		
+		
 	}
 
 }

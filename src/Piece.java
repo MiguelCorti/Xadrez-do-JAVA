@@ -1,10 +1,15 @@
 
 public abstract class Piece {
+	public int m_column;
+	public int m_row;
 	
-	public abstract boolean checkMovementTo(int horizontalSquare, int verticalSquare);
+	ArrayList<Position> possiblePositions = new ArrayList();
 	
-	public void moveTo()
-	{
+	public boolean checkMovementTo(int column, int row) {
+		
+	}
+	
+	public void moveTo(){
 		
 	}
 	
