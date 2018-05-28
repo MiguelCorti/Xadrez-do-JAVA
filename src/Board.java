@@ -6,8 +6,20 @@ public class Board extends JPanel {
 	private final int SIZE=800;
 	private final int SQUARESIDE = SIZE/8;
 	
+	private static Board board = null;
 	
-	public int isSqrEmpty(Position sqrPos)
+	private Board()
+	{
+		
+	}
+	
+	public static Board getBoard() {
+		if(board == null)
+			board = new Board();
+		return board;
+	}
+	
+	public int sqrState(Position sqrPos)
 	{
 		return 0;
 	}
