@@ -50,4 +50,15 @@ public class Position {
 			return true;
 		}
 	}
+	
+	boolean set(int r, int c) {
+		if(c>8||c<0||r>8||r<0) {
+			return false;
+		}
+		
+		row = r;
+		column = c;	
+		
+		return true;
+	}
 }
