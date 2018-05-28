@@ -4,7 +4,8 @@ public abstract class Piece {
 	public Position m_pos;
 	
 	ArrayList<Position> possiblePositions = new ArrayList<Position>();
-	
+
+	protected abstract void updatePossiblePositions();
 	
 	public boolean checkMovementTo(Position pos) {
 		for(Position p : possiblePositions) {
@@ -15,7 +16,6 @@ public abstract class Piece {
 		return false;
 	}
 	
-	protected abstract void updatePossiblePositions();
 	
 	public void moveTo(Position pos){
 		if(checkMovementTo(pos)) {
@@ -28,9 +28,4 @@ public abstract class Piece {
 		}
 			
 	}
-	
-	
-	
-	
-	
 }
