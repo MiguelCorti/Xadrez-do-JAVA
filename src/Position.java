@@ -3,6 +3,15 @@ public class Position {
 	int row;
 	int column;
 	
+	public Position() {
+		
+	}
+	
+	public Position(int r, int c){
+		row = r;
+		column = c;
+	}
+	
 	int getRow()
 	{
 		return row;
