@@ -1,5 +1,16 @@
 
 public abstract class Piece {
 	
-	public abstract void moveTo();
+	public abstract boolean checkMovementTo(int horizontalSquare, int verticalSquare);
+	
+	public void moveTo()
+	{
+		
+	}
+	
+	
+	
+	
+	
+	
 }
