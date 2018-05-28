@@ -2,7 +2,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.geom.*;
 
-public class ExPanel extends JPanel {
+public class Board extends JPanel {
 	private final int SIZE=800;
 	private final int SQUARESIDE = SIZE/8;
 	
