@@ -1,4 +1,3 @@
-/ArrayList$Piece.class
-/ArrayList.class
-/Piece.class
-/Board.class
+/Model/
+/View/
+/Controller/

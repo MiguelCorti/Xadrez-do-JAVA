@@ -1,3 +1,5 @@
+package Controller;
+
 import javax.swing.JFrame;
 
 public class XadrezMain {

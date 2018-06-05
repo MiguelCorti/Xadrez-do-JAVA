@@ -1,3 +1,5 @@
+package Model;
+import Controller.Board;
 
 public class King extends Piece{
 

@@ -1,3 +1,4 @@
+package Controller;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +9,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import Model.Bishop;
+import Model.King;
+import Model.Knight;
+import Model.Pawn;
+import Model.Piece;
+import Model.Position;
+import Model.Queen;
+import Model.Rook;
 
 public class Board extends JPanel {
 	private final int SIZE=800;
