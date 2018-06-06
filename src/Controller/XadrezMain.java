@@ -6,7 +6,7 @@ public class XadrezMain {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.setSize(800, 800);
+		frame.setSize(815, 840);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(Board.getBoard());

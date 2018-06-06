@@ -32,7 +32,7 @@ public class Position {
 	
 	public boolean setRow(int r)
 	{
-		if(r > 8 || r <0)
+		if(r > 8 || r <1)
 			return false;
 		else
 		{
@@ -43,7 +43,7 @@ public class Position {
 	
 	public boolean setColumn(int c)
 	{
-		if(c > 8 || c <0)
+		if(c > 8 || c <1)
 			return false;
 		else
 		{
@@ -53,7 +53,7 @@ public class Position {
 	}
 	
 	public boolean set(int r, int c) {
-		if(c>8||c<0||r>8||r<0) {
+		if(c>8||c<1||r>8||r<1) {
 			return false;
 		}
 		
@@ -61,5 +61,10 @@ public class Position {
 		column = c;	
 		
 		return true;
+	}
+	
+	public void print()
+	{
+		System.out.println(this.row + " " + this.column);
 	}
 }

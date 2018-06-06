@@ -19,8 +19,10 @@ public class Queen extends Piece{
 		// Adding the possible straight positions
 		i = 1;
 		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(currentRow, i)) {
-			if(i != currentColumn)
+			if(i != currentColumn) {
+				newPos = new Position();
 				possiblePositions.add(newPos);
+			}
 			
 			i++;
 		}
@@ -29,6 +31,7 @@ public class Queen extends Piece{
 		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(i, currentColumn)) {
 			
 			if(i != currentRow && Board.getBoard().sqrState(newPos) == 0)
+				newPos = new Position();
 				possiblePositions.add(newPos);
 			
 			i++;
@@ -39,6 +42,7 @@ public class Queen extends Piece{
 		i = 1;
 		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i++;
 		}
@@ -46,6 +50,7 @@ public class Queen extends Piece{
 		i = -1;
 		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i--;
 		}
@@ -53,6 +58,7 @@ public class Queen extends Piece{
 		i = 1;
 		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i++;
 		}
@@ -60,6 +66,7 @@ public class Queen extends Piece{
 		i = 1;
 		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i++;
 		}

@@ -1,6 +1,5 @@
 package Model;
 import java.util.ArrayList;
-import java.awt.Graphics;
 
 public abstract class Piece {
 	protected Position m_pos;
@@ -30,14 +29,18 @@ public abstract class Piece {
 	
 	
 	public void moveTo(Position pos){
+		System.out.println("Go to pos: " + pos.getColumn() + " - " + pos.getRow());
+		System.out.println("Possible pos:");
+		
+		possiblePositions.get(0).print();
+
 		if(checkMovementTo(pos)) {
 			m_pos = pos;
 			
 			updatePossiblePositions();
-			
 		}
 		else{
-			//Colocou em uma casa não válida
+			System.out.println("Casa invalida");
 		}
 			
 	}

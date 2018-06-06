@@ -5,6 +5,7 @@ public class King extends Piece{
 
 	public King(int row, int column, int color) {
 		super(row, column, color);
+		updatePossiblePositions();
 	}
 
 	protected void updatePossiblePositions() {

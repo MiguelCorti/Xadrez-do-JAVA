@@ -5,8 +5,21 @@ public class Pawn extends Piece{
 
 	public Pawn(int row, int column, int color) {
 		super(row, column, color);
+		setInicialPossiblePositions();
 	}
+	
+	private void setInicialPossiblePositions()
+	{
+		Position newPos = null;
+		
+		newPos = new Position(m_pos.getRow() - (1*this.getColor()), m_pos.getColumn());
+		possiblePositions.add(newPos);
+			
+		newPos = new Position(m_pos.getRow() - (2*this.getColor()), m_pos.getColumn());
+		possiblePositions.add(newPos);
 
+	}
+	
 	protected void updatePossiblePositions() {
 		possiblePositions.clear();
 		

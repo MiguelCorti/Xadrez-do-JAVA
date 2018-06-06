@@ -19,6 +19,7 @@ public class Bishop extends Piece{
 		i = 1;
 		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i++;
 		}
@@ -26,6 +27,7 @@ public class Bishop extends Piece{
 		i = -1;
 		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i--;
 		}
@@ -33,6 +35,7 @@ public class Bishop extends Piece{
 		i = 1;
 		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i++;
 		}
@@ -40,6 +43,7 @@ public class Bishop extends Piece{
 		i = 1;
 		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
 		{
+			newPos = new Position();
 			possiblePositions.add(newPos);
 			i++;
 		}

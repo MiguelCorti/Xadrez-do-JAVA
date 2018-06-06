@@ -6,7 +6,7 @@ public class Rook extends Piece{
 	public Rook(int row, int column, int color) {
 		super(row, column, color);
 	}
-
+	
 	protected void updatePossiblePositions()
 	{
 		int currentRow = m_pos.getRow();

@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +29,18 @@ public class Board extends JPanel {
 	
 	private static Board board = null;
 	
+	private Position mapCordToMatrix(float x, float y)
+	{
+		Position p = new Position((int) x/SQUARESIDE +1, (int) y/SQUARESIDE +1);
+		return p;
+	}
+	
 	private Board()
 	{
 		// Black Pieces
-		bMatrix[1][1] = new Rook(1, 1, -1);
+		//bMatrix[1][1] = new Rook(1, 1, -1);
 		bMatrix[1][2] = new Knight(1, 2, -1);
-		bMatrix[1][3] = new Bishop(1, 3, -1);
+		/*bMatrix[1][3] = new Bishop(1, 3, -1);
 		bMatrix[1][4] = new Queen(1, 4, -1);
 		bMatrix[1][5] = new King(1, 5, -1);
 		bMatrix[1][6] = new Bishop(1, 6, -1);
@@ -65,7 +73,7 @@ public class Board extends JPanel {
 		bMatrix[7][5] = new Pawn(7, 5, 1);
 		bMatrix[7][6] = new Pawn(7, 6, 1);
 		bMatrix[7][7] = new Pawn(7, 7, 1);
-		bMatrix[7][8] = new Pawn(7, 8, 1);
+		bMatrix[7][8] = new Pawn(7, 8, 1);*/
 		
 		for(int i = 3; i < 7; i++) {
 			for(int j = 1; j < 9; j++) {
@@ -73,6 +81,37 @@ public class Board extends JPanel {
 			}
 		}
 		
+		addMouseListener(new MouseAdapter() {
+			boolean pieceSelected = false;
+			Position posSelected;
+			
+            public void mouseClicked(MouseEvent e) {
+               
+            	Position p = mapCordToMatrix(e.getY(), e.getX());
+            	if(pieceSelected)
+            	{
+            		Piece myPiece = bMatrix[posSelected.getRow()][posSelected.getColumn()];
+            		myPiece.moveTo(p);
+            		int row = myPiece.getM_pos().getRow();
+            		int col = myPiece.getM_pos().getColumn();
+            		System.out.println();
+            		bMatrix[posSelected.getRow()][posSelected.getColumn()] = null;
+            		bMatrix[row][col] = myPiece;
+            		pieceSelected = false;
+            		printBMatrix();
+            		repaint();
+            	}
+            	else
+            	{
+            		if(sqrState(p)==1)
+            		{
+            			pieceSelected = true;
+            			posSelected = p;
+            		}
+            	}
+            }
+        });
+
 	}
 	
 	public static Board getBoard() {
@@ -83,8 +122,46 @@ public class Board extends JPanel {
 	
 	public int sqrState(Position sqrPos)
 	{
-		return 0;
+		if(bMatrix[sqrPos.getRow()][sqrPos.getColumn()] == null)
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
 	}
+	
+	private void printBMatrix()
+    {
+
+        for(int i =1; i<9; i++)
+        {
+            for(int j = 1; j<9; j++)
+            {
+                if(bMatrix[i][j]==null)
+                    System.out.print(" 0 ");
+                else
+                {
+                    if(bMatrix[i][j] instanceof Rook)
+                        System.out.print(" t ");
+                    else if(bMatrix[i][j] instanceof Bishop)
+                        System.out.print(" b ");
+                    else if(bMatrix[i][j] instanceof King)
+                        System.out.print(" r ");
+                    else if(bMatrix[i][j] instanceof Knight)
+                        System.out.print(" c ");
+                    else if(bMatrix[i][j] instanceof Pawn)
+                        System.out.print(" p ");
+                    else if(bMatrix[i][j] instanceof Queen)
+                        System.out.print(" d ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
+    }
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -113,7 +190,7 @@ public class Board extends JPanel {
 		}
 				
 		for(i = 1; i < 9; i++) {
-			for(j = 1; j < 9; j++) {
+            for(j = 1; j < 9; j++) {
 				if(bMatrix[i][j] != null){
 					Image img = null;
 					String imgName;
@@ -158,7 +235,7 @@ public class Board extends JPanel {
 			}
 		}
 		
-		g2d.dispose();
+		//g2d.dispose();
 		
 	}
 }
