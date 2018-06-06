@@ -62,4 +62,9 @@ public class Position {
 		
 		return true;
 	}
+	
+	public void print()
+	{
+		System.out.println(this.row + " " + this.column);
+	}
 }
