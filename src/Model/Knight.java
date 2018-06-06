@@ -44,4 +44,15 @@ public class Knight extends Piece{
 			}
 		}
 	}
+	
+	protected void setInitialPossiblePositions(){
+			Position myPos = this.getM_pos();
+			Position p = new Position(myPos.getRow()-2*this.getColor(),  myPos.getColumn()+1);
+			possiblePositions.add(p);
+			
+			p = new Position(myPos.getRow()-2*this.getColor(),  myPos.getColumn()-1);
+			possiblePositions.add(p);
+	}
+	
+	
 }
