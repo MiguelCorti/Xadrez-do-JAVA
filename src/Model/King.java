@@ -11,29 +11,35 @@ public class King extends Piece{
 		possiblePositions.clear();
 		
 		Position p = new Position();
-		
-		if(p.set(m_pos.getColumn()+1, m_pos.getRow()+0))
+		if(p.set(m_pos.getRow()+0, m_pos.getColumn()+1))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()-1, m_pos.getRow()+0))
+		p = new Position();
+		if(p.set(m_pos.getRow()+0, m_pos.getColumn()-1))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()+0, m_pos.getRow()+1))
+		p = new Position();
+		if(p.set(m_pos.getRow()+1, m_pos.getColumn()+0))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()+0, m_pos.getRow()-1))
+		p = new Position();
+		if(p.set(m_pos.getRow()-1, m_pos.getColumn()+0))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()+1, m_pos.getRow()+1))
+		p = new Position();
+		if(p.set(m_pos.getRow()+1, m_pos.getColumn()+1))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()+1, m_pos.getRow()-1))
+		p = new Position();
+		if(p.set(m_pos.getRow()-1, m_pos.getColumn()+1))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()-1, m_pos.getRow()+1))
+		p = new Position();
+		if(p.set(m_pos.getRow()+1, m_pos.getColumn()-1))
 			possiblePositions.add(p);
 		
-		if(p.set(m_pos.getColumn()-1, m_pos.getRow()-1))
+		p = new Position();
+		if(p.set(m_pos.getRow()-1, m_pos.getColumn()-1))
 			possiblePositions.add(p);
 		
 		for(int i = 0; i<possiblePositions.size(); i++)
