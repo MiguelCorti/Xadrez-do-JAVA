@@ -7,7 +7,7 @@ public class Rook extends Piece{
 		super(row, column, color);
 	}
 	
-	protected void updatePossiblePositions()
+	public void updatePossiblePositions()
 	{
 		int currentRow = m_pos.getRow();
 		int currentColumn = m_pos.getColumn();
@@ -19,7 +19,10 @@ public class Rook extends Piece{
 		i = 1;
 		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(currentRow, i)) {
 			if(i != currentColumn)
+			{
 				possiblePositions.add(newPos);
+				newPos = new Position();
+			}
 			
 			i++;
 		}
@@ -28,7 +31,10 @@ public class Rook extends Piece{
 		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(i, currentColumn)) {
 			
 			if(i != currentRow && Board.getBoard().sqrState(newPos) == 0)
+			{
 				possiblePositions.add(newPos);
+				newPos = new Position();
+			}
 			
 			i++;
 		}

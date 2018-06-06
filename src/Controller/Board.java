@@ -38,9 +38,9 @@ public class Board extends JPanel {
 	private Board()
 	{
 		// Black Pieces
-		//bMatrix[1][1] = new Rook(1, 1, -1);
+		bMatrix[1][1] = new Rook(1, 1, -1);
 		bMatrix[1][2] = new Knight(1, 2, -1);
-		/*bMatrix[1][3] = new Bishop(1, 3, -1);
+		bMatrix[1][3] = new Bishop(1, 3, -1);
 		bMatrix[1][4] = new Queen(1, 4, -1);
 		bMatrix[1][5] = new King(1, 5, -1);
 		bMatrix[1][6] = new Bishop(1, 6, -1);
@@ -73,7 +73,7 @@ public class Board extends JPanel {
 		bMatrix[7][5] = new Pawn(7, 5, 1);
 		bMatrix[7][6] = new Pawn(7, 6, 1);
 		bMatrix[7][7] = new Pawn(7, 7, 1);
-		bMatrix[7][8] = new Pawn(7, 8, 1);*/
+		bMatrix[7][8] = new Pawn(7, 8, 1);
 		
 		for(int i = 3; i < 7; i++) {
 			for(int j = 1; j < 9; j++) {
@@ -88,8 +88,10 @@ public class Board extends JPanel {
             public void mouseClicked(MouseEvent e) {
                
             	Position p = mapCordToMatrix(e.getY(), e.getX());
+            	p.print();
             	if(pieceSelected)
             	{
+   
             		Piece myPiece = bMatrix[posSelected.getRow()][posSelected.getColumn()];
             		myPiece.moveTo(p);
             		int row = myPiece.getM_pos().getRow();
@@ -98,7 +100,14 @@ public class Board extends JPanel {
             		bMatrix[posSelected.getRow()][posSelected.getColumn()] = null;
             		bMatrix[row][col] = myPiece;
             		pieceSelected = false;
-            		printBMatrix();
+            		
+            		for(int i = 1; i < 9; i++) {
+                        for(int j = 1; j < 9; j++) {
+                        	if(bMatrix[i][j] != null)
+                        		bMatrix[i][j].updatePossiblePositions();
+                        }
+            		}
+            		
             		repaint();
             	}
             	else

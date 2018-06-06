@@ -7,7 +7,7 @@ public class Queen extends Piece{
 		super(row, column, color);
 	}
 
-	protected void updatePossiblePositions()
+	public void updatePossiblePositions()
 	{
 		int currentRow = m_pos.getRow();
 		int currentColumn = m_pos.getColumn();

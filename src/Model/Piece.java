@@ -16,7 +16,7 @@ public abstract class Piece {
 		m_color = color;
 	}
 
-	protected abstract void updatePossiblePositions();
+	public abstract void updatePossiblePositions();
 	
 	public boolean checkMovementTo(Position pos) {
 		for(Position p : possiblePositions) {
@@ -29,11 +29,8 @@ public abstract class Piece {
 	
 	
 	public void moveTo(Position pos){
-		System.out.println("Go to pos: " + pos.getColumn() + " - " + pos.getRow());
-		System.out.println("Possible pos:");
-		
-		possiblePositions.get(0).print();
-
+		for(Position p : possiblePositions)
+			p.print();
 		if(checkMovementTo(pos)) {
 			m_pos = pos;
 			

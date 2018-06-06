@@ -17,7 +17,7 @@ public class Knight extends Piece{
 		possiblePositions.add(p);
 	}
 	
-	protected void updatePossiblePositions() {
+	public void updatePossiblePositions() {
 		possiblePositions.clear();
 		
 		Position p = new Position();
