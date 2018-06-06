@@ -2,7 +2,7 @@ package Model;
 import java.util.ArrayList;
 
 public abstract class Piece {
-	public Position m_pos;
+	protected Position m_pos;
 	private int m_color;
 	
 	ArrayList<Position> possiblePositions = new ArrayList<Position>();
@@ -46,6 +46,14 @@ public abstract class Piece {
 
 	public void setColor(int color) {
 		this.m_color = color;
+	}
+	
+	public Position getM_pos() {
+		return m_pos;
+	}
+
+	public void setM_pos(Position m_pos) {
+		this.m_pos = m_pos;
 	}
 	
 }

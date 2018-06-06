@@ -91,7 +91,7 @@ public class Board extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		
 		int i, j;
-		
+
 		for(i = 0; i < 8; i++) {
 			for(j = 0; j < 8; j++) {
 				Rectangle2D rt = new Rectangle2D.Double(i*SQUARESIDE,j*SQUARESIDE,SQUARESIDE,SQUARESIDE);
@@ -109,10 +109,13 @@ public class Board extends JPanel {
 				}
 				
 				g2d.fill(rt);
+			}
+		}
 				
-				
+		for(i = 0; i < 8; i++) {
+			for(j = 0; j < 8; j++) {
 				if(bMatrix[i][j] != null){
-					Image img;
+					Image img = null;
 					String imgName;
 					String imgType = "";
 					String imgColor;
@@ -138,18 +141,24 @@ public class Board extends JPanel {
 						imgType = "dama";
 					
 					
-					imgName = imgColor + '_' + imgType + ".gif";
-					System.out.println(imgName);
+					imgName = "assets\\"  + imgColor + '_' + imgType + ".gif";
 					try {
 						img = ImageIO.read(new File(imgName));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					
+					Position piecePos = bMatrix[i][j].getM_pos();
+
+					if(g2d.drawImage(img, (piecePos.getColumn() - 1) * SQUARESIDE, (piecePos.getRow() - 1) * SQUARESIDE, 
+							SQUARESIDE, SQUARESIDE, null) == false) {
+						System.out.println("Erro ao desenhar a seguinte imagem: " + imgName);
+					}
 				}
 			}
 		}
 		
-		
+		g2d.dispose();
 		
 	}
 }
