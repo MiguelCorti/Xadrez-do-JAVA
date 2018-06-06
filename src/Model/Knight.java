@@ -5,14 +5,18 @@ public class Knight extends Piece{
 
 	public Knight(int row, int column, int color) {
 		super(row, column, color);
-		setInicialPossiblePositions();
+		setInitialPossiblePositions();
 	}
 	
-	private void setInicialPossiblePositions()
-	{
+	private void setInitialPossiblePositions(){
+		Position myPos = this.getM_pos();
+		Position p = new Position(myPos.getRow()-2*this.getColor(),  myPos.getColumn()+1);
+		possiblePositions.add(p);
 		
+		p = new Position(myPos.getRow()-2*this.getColor(),  myPos.getColumn()-1);
+		possiblePositions.add(p);
 	}
-
+	
 	protected void updatePossiblePositions() {
 		possiblePositions.clear();
 		
@@ -58,6 +62,8 @@ public class Knight extends Piece{
 			}
 		}
 	}
+	
+
 	
 	
 }
