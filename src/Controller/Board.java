@@ -23,52 +23,52 @@ public class Board extends JPanel {
 	private final int SIZE=800;
 	private final int SQUARESIDE = SIZE/8;
 	
-	private Piece[][] bMatrix = new Piece[8][8];
+	private Piece[][] bMatrix = new Piece[9][9];
 	
 	private static Board board = null;
 	
 	private Board()
 	{
-		// White Pieces
-		bMatrix[0][0] = new Rook(1, 1, 1);
-		bMatrix[0][1] = new Knight(1, 2, 1);
-		bMatrix[0][2] = new Bishop(1, 3, 1);
-		bMatrix[0][3] = new Queen(1, 4, 1);
-		bMatrix[0][4] = new King(1, 5, 1);
-		bMatrix[0][5] = new Bishop(1, 6, 1);
-		bMatrix[0][6] = new Knight(1, 7, 1);
-		bMatrix[0][7] = new Rook(1, 8, 1);
-		
-		bMatrix[1][0] = new Pawn(2, 1, 1);
-		bMatrix[1][1] = new Pawn(2, 2, 1);
-		bMatrix[1][2] = new Pawn(2, 3, 1);
-		bMatrix[1][3] = new Pawn(2, 4, 1);
-		bMatrix[1][4] = new Pawn(2, 5, 1);
-		bMatrix[1][5] = new Pawn(2, 6, 1);
-		bMatrix[1][6] = new Pawn(2, 7, 1);
-		bMatrix[1][7] = new Pawn(2, 8, 1);
-		
 		// Black Pieces
-		bMatrix[7][0] = new Rook(8, 1, -1);
-		bMatrix[7][1] = new Knight(8, 2, -1);
-		bMatrix[7][2] = new Bishop(8, 3, -1);
-		bMatrix[7][3] = new Queen(8, 4, -1);
-		bMatrix[7][4] = new King(8, 5, -1);
-		bMatrix[7][5] = new Bishop(8, 6, -1);
-		bMatrix[7][6] = new Knight(8, 7, -1);
-		bMatrix[7][7] = new Rook(8, 8, -1);
+		bMatrix[1][1] = new Rook(1, 1, -1);
+		bMatrix[1][2] = new Knight(1, 2, -1);
+		bMatrix[1][3] = new Bishop(1, 3, -1);
+		bMatrix[1][4] = new Queen(1, 4, -1);
+		bMatrix[1][5] = new King(1, 5, -1);
+		bMatrix[1][6] = new Bishop(1, 6, -1);
+		bMatrix[1][7] = new Knight(1, 7, -1);
+		bMatrix[1][8] = new Rook(1, 8, -1);
 		
-		bMatrix[6][0] = new Pawn(7, 1, -1);
-		bMatrix[6][1] = new Pawn(7, 2, -1);
-		bMatrix[6][2] = new Pawn(7, 3, -1);
-		bMatrix[6][3] = new Pawn(7, 4, -1);
-		bMatrix[6][4] = new Pawn(7, 5, -1);
-		bMatrix[6][5] = new Pawn(7, 6, -1);
-		bMatrix[6][6] = new Pawn(7, 7, -1);
-		bMatrix[6][7] = new Pawn(7, 8, -1);
+		bMatrix[2][1] = new Pawn(2, 1, -1);
+		bMatrix[2][2] = new Pawn(2, 2, -1);
+		bMatrix[2][3] = new Pawn(2, 3, -1);
+		bMatrix[2][4] = new Pawn(2, 4, -1);
+		bMatrix[2][5] = new Pawn(2, 5, -1);
+		bMatrix[2][6] = new Pawn(2, 6, -1);
+		bMatrix[2][7] = new Pawn(2, 7, -1);
+		bMatrix[2][8] = new Pawn(2, 8, -1);
 		
-		for(int i = 2; i < 6; i++) {
-			for(int j = 0; j < 8; j++) {
+		// White Pieces
+		bMatrix[8][1] = new Rook(8, 1, 1);
+		bMatrix[8][2] = new Knight(8, 2, 1);
+		bMatrix[8][3] = new Bishop(8, 3, 1);
+		bMatrix[8][4] = new Queen(8, 4, 1);
+		bMatrix[8][5] = new King(8, 5, 1);
+		bMatrix[8][6] = new Bishop(8, 6, 1);
+		bMatrix[8][7] = new Knight(8, 7, 1);
+		bMatrix[8][8] = new Rook(8, 8, 1);
+		
+		bMatrix[7][1] = new Pawn(7, 1, 1);
+		bMatrix[7][2] = new Pawn(7, 2, 1);
+		bMatrix[7][3] = new Pawn(7, 3, 1);
+		bMatrix[7][4] = new Pawn(7, 4, 1);
+		bMatrix[7][5] = new Pawn(7, 5, 1);
+		bMatrix[7][6] = new Pawn(7, 6, 1);
+		bMatrix[7][7] = new Pawn(7, 7, 1);
+		bMatrix[7][8] = new Pawn(7, 8, 1);
+		
+		for(int i = 3; i < 7; i++) {
+			for(int j = 1; j < 9; j++) {
 				bMatrix[i][j] = null;
 			}
 		}
@@ -112,8 +112,8 @@ public class Board extends JPanel {
 			}
 		}
 				
-		for(i = 0; i < 8; i++) {
-			for(j = 0; j < 8; j++) {
+		for(i = 1; i < 9; i++) {
+			for(j = 1; j < 9; j++) {
 				if(bMatrix[i][j] != null){
 					Image img = null;
 					String imgName;

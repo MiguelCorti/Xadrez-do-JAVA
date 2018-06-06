@@ -1,5 +1,6 @@
 package Model;
 import java.util.ArrayList;
+import java.awt.Graphics;
 
 public abstract class Piece {
 	protected Position m_pos;
@@ -33,6 +34,7 @@ public abstract class Piece {
 			m_pos = pos;
 			
 			updatePossiblePositions();
+			
 		}
 		else{
 			//Colocou em uma casa não válida
@@ -52,8 +54,8 @@ public abstract class Piece {
 		return m_pos;
 	}
 
-	public void setM_pos(Position m_pos) {
-		this.m_pos = m_pos;
+	public void setM_pos(Position pos) {
+		this.m_pos = pos;
 	}
 	
 }
