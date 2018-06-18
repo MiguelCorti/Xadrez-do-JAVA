@@ -1,4 +1,4 @@
-package Model;
+package gameControl;
 
 public class Position {
 	private int row;

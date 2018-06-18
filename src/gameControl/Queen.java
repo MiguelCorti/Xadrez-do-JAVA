@@ -1,5 +1,4 @@
-package Model;
-import Controller.Board;
+package gameControl;
 
 public class Queen extends Piece{	
 	

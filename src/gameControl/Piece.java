@@ -1,4 +1,4 @@
-package Model;
+package gameControl;
 import java.util.ArrayList;
 
 public abstract class Piece {
