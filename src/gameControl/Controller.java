@@ -17,8 +17,18 @@ public class Controller {
 		Board.getBoard().addObserver(o);
 	}
 	
-	public void mouseClicked(Position clickPos)
+	/* Notifies the board controller that a click has happened
+	*  Params:
+	*     1) clickPos: The destination position of the selected piece;
+	*     2) selectedPiece: The piece selected for movimentation;
+	*     3) clickType: If it's the first click (0) or the second (1).
+	*/
+	public boolean mouseClicked(Position clickPos, Position selectedPiece, int clickType)
 	{
-		//Board.getBoard().click();
+		if(clickType == 1)
+			return Board.getBoard().click(clickPos, selectedPiece);
+		
+		Board.getBoard().selectedPiece(selectedPiece);
+		return true;
 	}
 }

@@ -63,6 +63,53 @@ public class Board extends Observable {
 		return board;
 	}
 	
+	public void selectedPiece(Position piece) {
+		Piece m_piece = boardMatrix[piece.getRow()][piece.getColumn()];
+		String descriptor = 'r' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn());
+		
+		for(Position p : m_piece.possiblePositions) {
+			descriptor += 'g' + Integer.toString(p.getRow()) + Integer.toString(p.getColumn()) ;
+		}
+		
+		descriptor += '\0';
+		
+		this.setChanged();
+		this.notifyObservers(descriptor);
+		this.clearChanged();
+	}
+	
+	public boolean click(Position click, Position piece) {
+		Piece myPiece = boardMatrix[piece.getRow()][piece.getColumn()];
+		boolean pieceMoved = myPiece.moveTo(click);
+		
+		if(pieceMoved) {
+			int row = myPiece.getM_pos().getRow();
+			int col = myPiece.getM_pos().getColumn();
+			String descriptor = 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
+			                        + Integer.toString(row) + Integer.toString(col) + '\0';
+			
+			boardMatrix[piece.getRow()][piece.getColumn()] = null;
+			boardMatrix[row][col] = myPiece;
+			
+			for(int i = 1; i < 9; i++) {
+	            for(int j = 1; j < 9; j++) {
+	            	if(boardMatrix[i][j] != null)
+	            		boardMatrix[i][j].updatePossiblePositions();
+	            }
+			}
+			
+			this.setChanged();
+			this.notifyObservers(descriptor);
+			this.clearChanged();
+			
+			return pieceMoved;
+		}
+		
+		System.out.printf("Nao foi possivel mover a peça de (%d, %d) para (%d, %d)\n", click.getRow(), click.getColumn(), piece.getRow(), piece.getColumn());
+		
+		return pieceMoved;
+	}
+	
 	/* Checks the state of the passed square
 	 * Returns 0 : the sqrPos is empty
 	 * Returns 1 : the sqrPos has a white piece

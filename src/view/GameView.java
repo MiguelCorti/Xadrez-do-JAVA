@@ -7,63 +7,69 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import gameControl.Bishop;
 import gameControl.Controller;
+import gameControl.King;
+import gameControl.Knight;
+import gameControl.Pawn;
 import gameControl.Position;
+import gameControl.Queen;
+import gameControl.Rook;
 
 public class GameView extends JPanel implements Observer {
 	private int SIZE;
 	private int SQUARESIDE;
 	
-	private Image[][] imagesBoard = new Image[9][9]; //Será que isso funciona???
+	private Image[][] imagesBoard = new Image[9][9];
+	private Color[][] squareColor = new Color[9][9];
 	
 	public GameView(int screenSize)
 	{
-		
 		Controller.getInstance().register(this);
 		SIZE = screenSize;
 		SQUARESIDE = SIZE/8;
 		
+		initializeImages();
+	
+		nullifySquareColor();
+		
 		addMouseListener(new MouseAdapter() {
-			boolean pieceSelected = false;
-			Position posSelected;
+			boolean pieceIsSelected = false;
+			int i, j;
+			Position selectedPiecePos;
 			
             public void mouseClicked(MouseEvent e) {
                
-            	Position p = mapCoordToMatrix(e.getY(), e.getX());
-            	p.print();
-            	if(pieceSelected)
+            	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
+            	clickedPos.print();
+            	if(pieceIsSelected)
             	{
-   
-            		/*Piece myPiece = bMatrix[posSelected.getRow()][posSelected.getColumn()];
-            		myPiece.moveTo(p);
-            		int row = myPiece.getM_pos().getRow();
-            		int col = myPiece.getM_pos().getColumn();
-            		System.out.println();
-            		bMatrix[posSelected.getRow()][posSelected.getColumn()] = null;
-            		bMatrix[row][col] = myPiece;
-            		pieceSelected = false;
-            		
-            		for(int i = 1; i < 9; i++) {
-                        for(int j = 1; j < 9; j++) {
-                        	if(bMatrix[i][j] != null)
-                        		bMatrix[i][j].updatePossiblePositions();
-                        }
+            		if(Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1) == false)
+            		{
+            			nullifySquareColor();
+            			repaint();
             		}
-            		
-            		repaint();*/
+            		pieceIsSelected = false;
             	}
             	else
             	{
-            		/*if(sqrState(p)==1)
+            		i = clickedPos.getRow(); 
+            		j = clickedPos.getColumn();
+            		
+            		if(imagesBoard[i][j] != null)
             		{
-            			pieceSelected = true;
-            			posSelected = p;
-            		}*/
+            			pieceIsSelected = true;
+            			selectedPiecePos = clickedPos;
+            			Controller.getInstance().mouseClicked(null, selectedPiecePos, 0);
+            		}
             	}
             }
         });
@@ -72,7 +78,100 @@ public class GameView extends JPanel implements Observer {
 	// The function used by the Observable (board) to notify this view that changes occurred
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		String descriptorTemp = (String) arg1;
+		char[] descriptor = descriptorTemp.toCharArray();
+		Position square;
+		int i = 0;
+		
+		while(descriptor[i] != '\0')
+		{
+			switch(descriptor[i]) {
+				case 'p':
+					Position original = new Position(Character.getNumericValue(descriptor[i+1]), Character.getNumericValue(descriptor[i+2]));
+					Position destination = new Position(Character.getNumericValue(descriptor[i+3]), Character.getNumericValue(descriptor[i+4]));
+					
+					imagesBoard[destination.getRow()][ destination.getColumn()] = imagesBoard[original.getRow()][original.getColumn()];
+					imagesBoard[original.getRow()][original.getColumn()] = null;
+					
+					nullifySquareColor();
+					
+					break;
+				case 'g':
+					square = new Position(Character.getNumericValue(descriptor[i+1]), Character.getNumericValue(descriptor[i+2]));
+					
+					squareColor[square.getRow()][square.getColumn()] = Color.GREEN;
+					
+					break;
+				case 'r':
+					square = new Position(Character.getNumericValue(descriptor[i+1]), Character.getNumericValue(descriptor[i+2]));
+					
+					squareColor[square.getRow()][square.getColumn()] = Color.RED;
+					break;
+			}
+			
+			i++;
+		}
+		
 		repaint();
+	}
+
+	private void nullifySquareColor(){
+		for(int i = 1; i < 9; i++)
+			for(int j = 1; j < 9; j++) 			
+				squareColor[i][j] = null;
+	}
+	private void initializeImages(){
+		
+		try {
+			// Filling Black Pieces at start position
+			imagesBoard[1][1] = ImageIO.read(new File("assets\\p_torre.gif"));
+			imagesBoard[1][2] = ImageIO.read(new File("assets\\p_cavalo.gif"));
+			imagesBoard[1][3] = ImageIO.read(new File("assets\\p_bispo.gif"));
+			imagesBoard[1][4] = ImageIO.read(new File("assets\\p_dama.gif"));
+			imagesBoard[1][5] = ImageIO.read(new File("assets\\p_rei.gif"));
+			imagesBoard[1][6] = ImageIO.read(new File("assets\\p_bispo.gif"));
+			imagesBoard[1][7] = ImageIO.read(new File("assets\\p_cavalo.gif"));
+			imagesBoard[1][8] = ImageIO.read(new File("assets\\p_torre.gif"));
+			
+			imagesBoard[2][1] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][2] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][3] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][4] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][5] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][6] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][7] = ImageIO.read(new File("assets\\p_peao.gif"));
+			imagesBoard[2][8] = ImageIO.read(new File("assets\\p_peao.gif"));
+			
+			// Filling White Pieces at start position
+			imagesBoard[8][1] = ImageIO.read(new File("assets\\b_torre.gif"));
+			imagesBoard[8][2] = ImageIO.read(new File("assets\\b_cavalo.gif"));
+			imagesBoard[8][3] = ImageIO.read(new File("assets\\b_bispo.gif"));
+			imagesBoard[8][4] = ImageIO.read(new File("assets\\b_dama.gif"));
+			imagesBoard[8][5] = ImageIO.read(new File("assets\\b_rei.gif"));
+			imagesBoard[8][6] = ImageIO.read(new File("assets\\b_bispo.gif"));
+			imagesBoard[8][7] = ImageIO.read(new File("assets\\b_cavalo.gif"));
+			imagesBoard[8][8] = ImageIO.read(new File("assets\\b_torre.gif"));
+			
+			imagesBoard[7][1] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][2] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][3] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][4] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][5] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][6] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][7] = ImageIO.read(new File("assets\\b_peao.gif"));
+			imagesBoard[7][8] = ImageIO.read(new File("assets\\b_peao.gif"));
+		} 
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		// Fill empty squares with null
+		for(int i = 3; i < 7; i++) {
+			for(int j = 1; j < 9; j++) {
+				imagesBoard[i][j] = null;
+			}
+		}
 	}
 	
 	// Auxiliary function for mapping the clicked screen position to an actual integer position
@@ -90,73 +189,42 @@ public class GameView extends JPanel implements Observer {
 		
 		int i, j;
 
-		for(i = 0; i < 8; i++) {
-			for(j = 0; j < 8; j++) {
-				Rectangle2D rt = new Rectangle2D.Double(i*SQUARESIDE,j*SQUARESIDE,SQUARESIDE,SQUARESIDE);
+		for(i = 1; i < 9; i++) {
+			for(j = 1; j < 9; j++) {
+				Rectangle2D rt = new Rectangle2D.Double((j-1)*SQUARESIDE,(i-1)*SQUARESIDE,SQUARESIDE,SQUARESIDE);
 				
-				g2d.setPaint(Color.WHITE);
-				if(i%2==0){
-					if(j%2!=0) {
-						g2d.setPaint(Color.BLACK);
+				if(squareColor[i][j] == null) {
+					g2d.setPaint(Color.WHITE);
+					if(i%2==0){
+						if(j%2!=0) {
+							g2d.setPaint(Color.BLACK);
+						}
+					}
+					else{
+						if(j%2==0) {
+							g2d.setPaint(Color.BLACK);
+						}
 					}
 				}
-				else{
-					if(j%2==0) {
-						g2d.setPaint(Color.BLACK);
-					}
+				else {
+					g2d.setPaint(squareColor[i][j]);
 				}
-				
 				g2d.fill(rt);
 			}
 		}
 		
-		/*for(i = 1; i < 9; i++) {
+		for(i = 1; i < 9; i++) {
             for(j = 1; j < 9; j++) {
 				if(imagesBoard[i][j] != null){
-					Image img = null;
-					String imgName;
-					String imgType = "";
-					String imgColor;
-					
-					// Guardando a letra do arquivo que referencia a cor
-					if(imagesBoard[i][j].getColor() == 1)
-						imgColor = "b";
-					else
-						imgColor = "p";
-					
-					// Quardando os nomes referentes ao arquivo de cada peça
-					if(bMatrix[i][j] instanceof Rook)
-						imgType = "torre";
-					else if(bMatrix[i][j] instanceof Bishop)
-						imgType = "bispo";
-					else if(bMatrix[i][j] instanceof King)
-						imgType = "rei";
-					else if(bMatrix[i][j] instanceof Knight)
-						imgType = "cavalo";
-					else if(bMatrix[i][j] instanceof Pawn)
-						imgType = "peao";
-					else if(bMatrix[i][j] instanceof Queen)
-						imgType = "dama";
-					
-					
-					imgName = "assets\\"  + imgColor + '_' + imgType + ".gif";
-					try {
-						img = ImageIO.read(new File(imgName));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					
-					Position piecePos = bMatrix[i][j].getM_pos();
-
-					if(g2d.drawImage(img, (piecePos.getColumn() - 1) * SQUARESIDE, (piecePos.getRow() - 1) * SQUARESIDE, 
-							SQUARESIDE, SQUARESIDE, null) == false) {
-						System.out.println("Erro ao desenhar a seguinte imagem: " + imgName);
+					if(g2d.drawImage(imagesBoard[i][j], (j - 1) * SQUARESIDE, (i - 1) * SQUARESIDE, 
+					   SQUARESIDE, SQUARESIDE, null) == false) {
+						System.out.println("Erro ao desenhar a seguinte imagem de posicao (" + i + ", " + j + ").");
 					}
 				}
 			}
 		}
 		
-		//g2d.dispose();*/
+		//g2d.dispose();
 	}
 
 }

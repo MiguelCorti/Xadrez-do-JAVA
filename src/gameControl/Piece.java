@@ -28,18 +28,19 @@ public abstract class Piece {
 	}
 	
 	
-	public void moveTo(Position pos){
+	public boolean moveTo(Position pos){
 		for(Position p : possiblePositions)
 			p.print();
 		if(checkMovementTo(pos)) {
 			m_pos = pos;
 			
 			updatePossiblePositions();
-		}
-		else{
-			System.out.println("Casa invalida");
-		}
 			
+			return true;
+		}
+		
+		System.out.println("Casa invalida");
+		return false;
 	}
 
 	public int getColor() {
