@@ -38,19 +38,23 @@ public class Pawn extends Piece{
 		}
 		
 		
-		/*p = new Position(m_pos.getRow() - getColor(), m_pos.getColumn() + 1);
-		if(Board.getBoard().sqrState(p) == (getColor()*(-1)))
+		p = new Position();
+		if(p.set(m_pos.getRow() - getColor(), m_pos.getColumn() + 1))
 		{
-			possiblePositions.add(p);
-		}*/
+			if(Board.getBoard().sqrState(p) == (getColor()*(-1)))
+			{
+				possiblePositions.add(p);
+			}
+		}
 		
-		
-		/*
-		p = new Position(m_pos.getRow() - getColor(), m_pos.getColumn() - 1);
-		if(Board.getBoard().sqrState(p) == getColor()*(-1))
+		p = new Position();
+		if(p.set(m_pos.getRow() - getColor(), m_pos.getColumn() - 1))
 		{
-			possiblePositions.add(p);
-		}*/
+			if(Board.getBoard().sqrState(p) == (getColor()*(-1)))
+			{
+				possiblePositions.add(p);
+			}
+		}
 			
 			
 			
