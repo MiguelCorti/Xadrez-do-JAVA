@@ -52,16 +52,30 @@ public class GameView extends JPanel implements Observer {
             	clickedPos.print();
             	if(pieceIsSelected)
             	{
-            		if(Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1) == false)
+            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
+            		if( returnValue != 1)
             		{
             			nullifySquareColor();
             			repaint();
             		}
-            		pieceIsSelected = false;
+            		if(returnValue == -1)
+            		{
+            			i = clickedPos.getRow();
+                		j = clickedPos.getColumn();
+                		
+                		if(imagesBoard[i][j] != null)
+                		{
+                			pieceIsSelected = true;
+                			selectedPiecePos = clickedPos;
+                			Controller.getInstance().mouseClicked(null, selectedPiecePos, 0);
+                		}
+            		}
+            		else
+            			pieceIsSelected = false;
             	}
             	else
             	{
-            		i = clickedPos.getRow(); 
+            		i = clickedPos.getRow();
             		j = clickedPos.getColumn();
             		
             		if(imagesBoard[i][j] != null)

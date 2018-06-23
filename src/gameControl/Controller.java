@@ -6,6 +6,8 @@ public class Controller {
 	
 	private static Controller ctrl = null;
 	
+	private int turn = 1;
+	
 	public static Controller getInstance()
 	{
 		if(ctrl == null)
@@ -22,13 +24,29 @@ public class Controller {
 	*     1) clickPos: The destination position of the selected piece;
 	*     2) selectedPiece: The piece selected for movimentation;
 	*     3) clickType: If it's the first click (0) or the second (1).
+	*     
+	*  Return values:
+	*     1, all right
+	*     0, unforbidden move
+	*     -1, changed the piece
 	*/
-	public boolean mouseClicked(Position clickPos, Position selectedPiece, int clickType)
+	public int mouseClicked(Position clickPos, Position selectedPiece, int clickType)
 	{
 		if(clickType == 1)
-			return Board.getBoard().click(clickPos, selectedPiece);
-		
+		{
+			if(Board.getBoard().sqrState(clickPos) != turn )
+				if(Board.getBoard().click(clickPos, selectedPiece))
+					return 1;
+				else
+					return 0;
+			return -1;
+		}
 		Board.getBoard().selectedPiece(selectedPiece);
-		return true;
+		return 1;
+	}
+	
+	public int getTurn()
+	{
+		return turn;
 	}
 }
