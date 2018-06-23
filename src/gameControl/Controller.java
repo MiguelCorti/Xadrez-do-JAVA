@@ -36,13 +36,24 @@ public class Controller {
 		{
 			if(Board.getBoard().sqrState(clickPos) != turn )
 				if(Board.getBoard().click(clickPos, selectedPiece))
+				{
+					turn = turn * (-1);
 					return 1;
+				}
 				else
 					return 0;
 			return -1;
 		}
-		Board.getBoard().selectedPiece(selectedPiece);
-		return 1;
+		else
+		{
+			if(Board.getBoard().sqrState(selectedPiece) == turn )
+			{
+				Board.getBoard().selectedPiece(selectedPiece);
+				return 1;		
+			}
+			
+			return 0;			
+		}
 	}
 	
 	public int getTurn()
