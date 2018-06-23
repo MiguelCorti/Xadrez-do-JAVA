@@ -55,7 +55,7 @@ public class Knight extends Piece{
 		
 		for(int i = 0; i<possiblePositions.size(); i++)
 		{
-			if(Board.getBoard().sqrState(possiblePositions.get(i)) != 0)
+			if(Board.getBoard().sqrState(possiblePositions.get(i)) == getColor())
 			{
 				possiblePositions.remove(i);
 			}
