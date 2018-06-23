@@ -14,6 +14,7 @@ import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import gameControl.Bishop;
 import gameControl.Controller;
@@ -124,6 +125,10 @@ public class GameView extends JPanel implements Observer {
 					
 					squareColor[square.getRow()][square.getColumn()] = Color.RED;
 					break;
+				case 'P':
+					JPopupMenu promotionPopup;
+					promotionPopup = new JPopupMenu();
+					
 			}
 			
 			i++;
