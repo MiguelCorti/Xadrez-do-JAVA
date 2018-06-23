@@ -27,7 +27,7 @@ public class Pawn extends Piece{
 		if(p.set( m_pos.getRow()-getColor(), m_pos.getColumn() ) && Board.getBoard().sqrState(p) == 0 )
 			possiblePositions.add(p);
 		
-		if(m_pos.getRow() == 1 || m_pos.getRow()==2 || m_pos.getRow()==7 || m_pos.getRow()==8)
+		if(m_pos.getRow()==2 || m_pos.getRow()==7)
 		{
 			if(!possiblePositions.isEmpty())
 			{				
