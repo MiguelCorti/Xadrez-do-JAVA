@@ -128,7 +128,8 @@ public class GameView extends JPanel implements Observer {
 				case 'P':
 					JPopupMenu promotionPopup;
 					promotionPopup = new JPopupMenu();
-					
+					System.out.println("PROMACAO");
+					break;
 			}
 			
 			i++;

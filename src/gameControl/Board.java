@@ -86,7 +86,13 @@ public class Board extends Observable {
 			int row = myPiece.getM_pos().getRow();
 			int col = myPiece.getM_pos().getColumn();
 			String descriptor = 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
-			                        + Integer.toString(row) + Integer.toString(col) + '\0';
+			                        + Integer.toString(row) + Integer.toString(col);
+			
+			if((row == 8 && myPiece.getColor() == -1) || (row == 1 && myPiece.getColor() == 1)){
+				descriptor += 'P';
+			}
+			
+			descriptor += '\0';
 			
 			boardMatrix[piece.getRow()][piece.getColumn()] = null;
 			boardMatrix[row][col] = myPiece;

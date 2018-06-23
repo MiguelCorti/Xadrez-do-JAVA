@@ -15,27 +15,71 @@ public class Rook extends Piece{
 		
 		possiblePositions.clear();
 
-		i = 1;
-		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(currentRow, i)) {
-			if(i != currentColumn)
-			{
+		System.out.println("Rook pos:");
+		
+		// Adding all squares north of the piece
+		for(i = currentRow + 1; i < 9; i++)
+		{
+			newPos = new Position();
+			if(newPos.set(i, currentColumn)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				newPos.print();
 				possiblePositions.add(newPos);
-				newPos = new Position();
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
 			}
-			
-			i++;
 		}
 		
-		i = 1;
-		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(i, currentColumn)) {
-			
-			if(i != currentRow && Board.getBoard().sqrState(newPos) == 0)
-			{
+		// Adding all squares south of the piece
+		for(i = currentRow - 1; i > 0; i--)
+		{
+			newPos = new Position();
+			if(newPos.set(i, currentColumn)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				newPos.print();
 				possiblePositions.add(newPos);
-				newPos = new Position();
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
 			}
-			
-			i++;
 		}
+		
+		// Adding all squares east of the piece
+		for(i = currentColumn + 1; i < 9; i++)
+		{
+			newPos = new Position();
+			if(newPos.set(currentRow, i)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				newPos.print();
+				possiblePositions.add(newPos);
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
+			}
+		}
+		
+		// Adding all squares west of the piece
+		for(i = currentColumn - 1; i > 0; i--)
+		{
+			newPos = new Position();
+			if(newPos.set(currentRow, i)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				newPos.print();
+				possiblePositions.add(newPos);
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
+			}
+		}
+
 	}
 }
