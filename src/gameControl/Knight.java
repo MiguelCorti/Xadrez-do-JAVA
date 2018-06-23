@@ -22,44 +22,45 @@ public class Knight extends Piece{
 		Position p = new Position();
 
 		if(p.set(m_pos.getRow()+2, m_pos.getColumn()+1 ))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 
 		p = new Position();
 		if(p.set(m_pos.getRow()-2, m_pos.getColumn()+1))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 
 		p = new Position();
 		if(p.set(m_pos.getRow()+2, m_pos.getColumn()-1))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 
 		p = new Position();
 		if(p.set(m_pos.getRow()-2, m_pos.getColumn()-1))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 
 		p = new Position();
 		if(p.set(m_pos.getRow()+1, m_pos.getColumn()+2))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 
 		p = new Position();
 		if(p.set(m_pos.getRow()-1, m_pos.getColumn()+2))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 
 		p = new Position();
 		if(p.set(m_pos.getRow()+1, m_pos.getColumn()-2))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 		
 		p = new Position();
 		if(p.set(m_pos.getRow()-1, m_pos.getColumn()-2))
-			possiblePositions.add(p);
+			if(Board.getBoard().sqrState(p) != getColor())
+				possiblePositions.add(p);
 	
 		
-		for(int i = 0; i<possiblePositions.size(); i++)
-		{
-			if(Board.getBoard().sqrState(possiblePositions.get(i)) == getColor())
-			{
-				possiblePositions.remove(i);
-			}
-		}
 	}
 	
 
