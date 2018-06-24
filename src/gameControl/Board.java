@@ -80,7 +80,22 @@ public class Board extends Observable {
 	
 	public boolean click(Position click, Position piece) {
 		Piece myPiece = boardMatrix[piece.getRow()][piece.getColumn()];
+		Piece enemyKing = null;
+		Piece friendlyKing = null;
 		boolean pieceMoved = myPiece.moveTo(click);
+		
+		for(int i = 1; i < 9; i++) {
+            for(int j = 1; j < 9; j++) {
+            	Piece tempKing = boardMatrix[i][j];
+            	if(tempKing != null && tempKing instanceof King) {
+            		if(tempKing.getColor() == myPiece.getColor())
+            			friendlyKing = tempKing;
+            		else
+            			enemyKing = tempKing;
+            	}
+            }
+		}
+		
 		
 		if(pieceMoved) {
 			int row = myPiece.getM_pos().getRow();
@@ -92,7 +107,7 @@ public class Board extends Observable {
 				descriptor += 'P';
 			}
 			
-			descriptor += '\0';
+			
 			
 			boardMatrix[piece.getRow()][piece.getColumn()] = null;
 			boardMatrix[row][col] = myPiece;
@@ -104,6 +119,19 @@ public class Board extends Observable {
 	            }
 			}
 			
+			if(checkKingPossiblePos(enemyKing)){
+				descriptor += 'r' + Integer.toString(enemyKing.getM_pos().getRow()) 
+				                  + Integer.toString(enemyKing.getM_pos().getColumn());
+				
+				if(enemyKing.possiblePositions.isEmpty())
+				{
+					System.out.println("XEQUE MATE " + friendlyKing.getColor() + " GANHOU");
+				}
+			}
+			
+			//checkForCheck(enemyKing);
+			
+			descriptor += '\0';
 			this.setChanged();
 			this.notifyObservers(descriptor);
 			this.clearChanged();
@@ -116,6 +144,36 @@ public class Board extends Observable {
 		return pieceMoved;
 	}
 	
+	
+	private boolean checkKingPossiblePos(Piece king) {
+		boolean kingIsAtCheck = false;
+		Piece otherPiece = null;
+		
+		for(int i = 1; i < 9; i++) {
+			for(int j = 1; j < 9; j++) {
+				otherPiece = boardMatrix[i][j];
+				
+				if(otherPiece != null && otherPiece.getColor() == -1*king.getColor()) {
+					for (Position otherPos : otherPiece.possiblePositions) {
+						for(int k = 0; k < king.possiblePositions.size(); k++) {
+							if(king.possiblePositions.get(k).isEqual(otherPos)){
+								king.possiblePositions.remove(k);
+							}
+						}
+						
+						if(king.getM_pos().isEqual(otherPos)) {
+							kingIsAtCheck = true;
+						}
+					}
+				}
+			}
+		}
+		
+		return kingIsAtCheck;
+	}
+	
+	private void checkForCheck(Piece king){
+	}
 	/* Checks the state of the passed square
 	 * Returns 0 : the sqrPos is empty
 	 * Returns 1 : the sqrPos has a white piece
@@ -132,7 +190,7 @@ public class Board extends Observable {
 	
 	
 	// Aux function for printing the board on the console
-	private void printBMatrix()
+	private void printBoardMatrix()
     {
 
         for(int i =1; i<9; i++)
