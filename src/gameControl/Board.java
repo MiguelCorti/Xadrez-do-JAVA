@@ -374,6 +374,58 @@ public class Board extends Observable {
         }
     }
 	
+	
+	public String getGameString()
+	{
+		String tempString = "";
+		String gameString = "";
+		if(Controller.getInstance().getTurn() == 1)
+			gameString += "1";
+		else
+			gameString += "0";
+		
+		gameString += System.lineSeparator();
+		
+		for(int i=1; i<9; i++)
+		{
+			for(int j=1; j<9; j++)
+			{
+				if(boardMatrix[i][j] != null)
+				{
+					if(boardMatrix[i][j] instanceof Rook)
+						tempString += "r";
+	                else if(boardMatrix[i][j] instanceof Bishop)
+	                	tempString += "b";
+	                else if(boardMatrix[i][j] instanceof King)
+	                	tempString += "k";
+	                else if(boardMatrix[i][j] instanceof Knight)
+	                	tempString += "n";
+	                else if(boardMatrix[i][j] instanceof Pawn)
+	                	tempString += "p";
+	                else if(boardMatrix[i][j] instanceof Queen)
+	                	tempString += "q";
+					
+					tempString += Integer.toString(i) + Integer.toString(j);
+					
+					if(boardMatrix[i][j].getColor() == 1)
+						tempString += "1";					
+					else
+						tempString += "0";
+					
+					if(boardMatrix[i][j].getHasMoved())
+						tempString += "1";
+					else
+						tempString += "0";
+					
+					tempString += System.lineSeparator();
+					gameString += tempString;
+					tempString = "";
+				}
+			}
+		}
+		return gameString;
+	}
+	
 	// Aux function for printing the board on the console
 	private void printBoardMatrix()
     {

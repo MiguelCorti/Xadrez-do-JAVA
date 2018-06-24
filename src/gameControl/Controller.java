@@ -1,5 +1,8 @@
 package gameControl;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Observer;
 
@@ -62,6 +65,26 @@ public class Controller {
 		}
 		
 		return 0;
+	}
+	
+	
+	public int saveGame(String path)
+	{
+		try {
+			FileWriter fw = new FileWriter(path);
+			PrintWriter pw = new PrintWriter(fw);
+			
+			String gameString = Board.getBoard().getGameString();
+
+			pw.print(gameString);
+
+			pw.close();
+			return 1;
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 	public void promotion(String promoteTo, int row, int col)
