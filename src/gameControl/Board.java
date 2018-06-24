@@ -128,9 +128,41 @@ public class Board extends Observable {
 		
 		// If the movement is possible and the game hasn't ended (checkmate) the movement will occur
 		if(pieceMoved && Controller.getInstance().getCheckMate() == 0) {
+			myPiece.hasMoved();
+
 			int row = myPiece.getM_pos().getRow();
 			int col = myPiece.getM_pos().getColumn();
-			String descriptor = 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
+			String descriptor = "";
+			//Castle case
+			if(myPiece instanceof King)
+			{
+				if(Math.abs( piece.getColumn() - col ) > 1)
+				{
+					
+					Piece myRook;
+					Position p = new Position();
+					if(col == 7)
+					{
+						myRook = boardMatrix[piece.getRow()][8];
+						boardMatrix[piece.getRow()][8] = null;
+						p.set(piece.getRow(), 6);
+						descriptor += 'p' + Integer.toString(piece.getRow()) + '8';
+					}
+					else //col==3
+					{
+						myRook = boardMatrix[piece.getRow()][1];
+						boardMatrix[piece.getRow()][1] = null;
+						p.set(piece.getRow(), 4);
+						descriptor += 'p' + Integer.toString(piece.getRow()) + '1';
+					}
+					myRook.setM_pos(p);
+					
+					boardMatrix[p.getRow()][p.getColumn()] = myRook;
+					descriptor += Integer.toString(myRook.getM_pos().getRow()) + Integer.toString(myRook.getM_pos().getColumn());
+				}
+			}
+			
+			descriptor += 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
 			                        + Integer.toString(row) + Integer.toString(col);
 			
 			if((row == 8 && myPiece.getColor() == -1) || (row == 1 && myPiece.getColor() == 1))
@@ -251,6 +283,19 @@ public class Board extends Observable {
 		
 	}
 	
+	
+	public boolean rookHasNotMoved(Position pos)
+	{
+		Piece temp = boardMatrix[pos.getRow()][pos.getColumn()];
+		if(temp instanceof Rook)
+		{
+			if(!temp.getHasMoved())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	// Aux function for printing the board on the console
 	private void printBoardMatrix()
