@@ -371,6 +371,83 @@ public class Board extends Observable {
 		return false;
 	}
 	
+	public void continueGame(ArrayList<String> gamePieces)
+	{
+		//Clearing the boardMatrix
+		for(int i = 1; i < 9; i++) {
+			for(int j = 1; j < 9; j++) {
+				boardMatrix[i][j] = null;
+			}
+		}
+		
+		int rTurn = 1;
+		if(gamePieces.get(0).equals("1"))
+		{
+			rTurn = 1;
+		}
+		else if(gamePieces.get(0).equals("0"))
+		{
+			rTurn = -1;
+		}
+		
+		
+		Controller.getInstance().setTurn(rTurn);
+		
+		for(int i=1; i<gamePieces.size(); i++)
+		{
+			int row = Integer.parseInt(gamePieces.get(i).substring(1, 2));
+			int col = Integer.parseInt(gamePieces.get(i).substring(2, 3));
+			int color = Integer.parseInt(gamePieces.get(i).substring(3, 4));
+			if(color==0)
+				color = -1;
+			int hasMoved = Integer.parseInt(gamePieces.get(i).substring(4, 5));
+			
+			switch(gamePieces.get(i).substring(0, 1))
+			{
+				case "k":
+					boardMatrix[row][col] = new King(row, col, color);
+					if(hasMoved == 1)
+						boardMatrix[row][col].hasMoved();
+					break;
+				case "q":
+					boardMatrix[row][col] = new Queen(row, col, color);
+					if(hasMoved == 1)
+						boardMatrix[row][col].hasMoved();
+					break;
+				case "r":
+					boardMatrix[row][col] = new Rook(row, col, color);
+					if(hasMoved == 1)
+						boardMatrix[row][col].hasMoved();
+					break;
+				case "b":
+					boardMatrix[row][col] = new Bishop(row, col, color);
+					if(hasMoved == 1)
+						boardMatrix[row][col].hasMoved();
+					break;
+				case "n":
+					boardMatrix[row][col] = new Knight(row, col, color);
+					if(hasMoved == 1)
+						boardMatrix[row][col].hasMoved();
+					break;
+				case "p":
+					boardMatrix[row][col] = new Pawn(row, col, color);
+					if(hasMoved == 1)
+						boardMatrix[row][col].hasMoved();
+					break;
+			}
+			updateAllPossiblePositions();
+		}
+	}
+	
+	private void updateAllPossiblePositions() {
+        for(int i = 1; i < 9; i++) {
+            for(int j = 1; j < 9; j++) {
+                if(boardMatrix[i][j] != null)
+                    boardMatrix[i][j].updatePossiblePositions();
+            }
+        }
+    }
+	
 	// Aux function for printing the board on the console
 	private void printBoardMatrix()
     {
