@@ -100,6 +100,10 @@ public class XadrezMain {
 				        
 					}
 				}
+				else
+				{
+					//choose a txt file!
+				}
 				
 			}
 		});

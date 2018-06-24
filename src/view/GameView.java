@@ -10,12 +10,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -53,8 +56,9 @@ public class GameView extends JPanel implements Observer {
 			int i, j;
 			Position selectedPiecePos;
 			
+
             public void mouseClicked(MouseEvent e) {
-            	if(Controller.getInstance().getCheckMate() == 0 && !popupIsUp) {
+            	if(Controller.getInstance().getCheckMate() == 0 && e.getButton() == MouseEvent.BUTTON1) {
 	            	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
 	            	clickedPos.print();
 	            	
@@ -62,6 +66,7 @@ public class GameView extends JPanel implements Observer {
 	            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
 	            		
 	            		if( returnValue != 1){
+
 	            			nullifySquareColor();
 	            			if(Controller.getInstance().getCheck() != 0) {
 	            				squareColor[checkedKingPos.getRow()][checkedKingPos.getColumn()] = Color.YELLOW;
@@ -99,7 +104,31 @@ public class GameView extends JPanel implements Observer {
 	            		}
 	            	}
             	}
+            	if(e.getButton() == MouseEvent.BUTTON3)
+            	{
+            		JFileChooser jfc = new JFileChooser();
+    				int returnValue = jfc.showSaveDialog(null);
+    				
+    				if(returnValue == JFileChooser.APPROVE_OPTION)
+    				{
+    					String path = jfc.getSelectedFile().getPath();
+    					int size = path.length();
+    					if(!jfc.getSelectedFile().getPath().substring(size-3).equals("txt"))
+    					{
+    						path += ".txt";
+    					}
+    					
+    					int savingReturn = Controller.getInstance().saveGame(path);
+    					
+    					if(savingReturn == 1)
+    					{
+    						//all right
+    					}
+    					
+    				}
+            	}
             }
+			
         });
 	}
 	
