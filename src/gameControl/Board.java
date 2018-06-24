@@ -64,8 +64,17 @@ public class Board extends Observable {
 	}
 	
 	public boolean selectedPiece(Position piece) {
-		Piece m_piece = boardMatrix[piece.getRow()][piece.getColumn()];
+		int originalRow = piece.getRow();
+		int originalColumn = piece.getColumn();
+		int newRow = originalRow, newColumn = originalColumn;
+		int oldRow = originalRow, oldColumn = originalColumn;
+		
+		Piece m_piece = boardMatrix[originalRow][originalColumn];
+		ArrayList<Integer> invalidPositions = new ArrayList<Integer>();
+		
 		Piece friendlyKing = null;
+		boolean friendlyKingChecked = false;
+		boolean tempBool;
 		
 		for(int i = 1; i < 9; i++) {
             for(int j = 1; j < 9; j++) {
@@ -77,11 +86,61 @@ public class Board extends Observable {
             }
 		}
 		
-		if(m_piece.getColor() == Controller.getInstance().getCheck()) {
-			if(!m_piece.equals(friendlyKing)) {
-				return false;
+		friendlyKingChecked = isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor());
+		
+		ArrayList<Position> tempPossiblePos = new ArrayList<Position>(m_piece.possiblePositions);
+		
+		for(int i = 0; i < tempPossiblePos.size(); i++) {
+			Position p = tempPossiblePos.get(i);
+			
+			m_piece.moveTo(p);
+	
+			newRow = m_piece.getM_pos().getRow();
+			newColumn = m_piece.getM_pos().getColumn();
+			
+			boardMatrix[oldRow][oldColumn] = null;
+			boardMatrix[newRow][newColumn] = m_piece;
+			
+			oldRow = newRow;
+			oldColumn = newColumn;
+			
+			updateAllPossiblePositions();
+			
+			tempBool = isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor());
+			
+			 
+			/* When (friendlyKingChecked == false && tempBool == true) means this movement places the king at check, so it should be invalid (will remove the pos)
+			 * When (friendlyKingChecked == true && tempBool == true) this means this movement changes nothing about the check state, thus shouldn't be valid (will remove)
+			 * When (friendlyKingChecked == true && tempBool == false) means this movement will make the king unchecked, so it should be available (will do nothing)
+			 * When (friendlyKingChecked == false && tempBool == false) means there's no check and wont make the king checked, so it's the usual case and should be available (will do nothing)
+			 */
+			if((friendlyKingChecked == false && tempBool == true) || (friendlyKingChecked == true && tempBool == true)) { // this means this movement places the king at check, so it should be invalid
+				invalidPositions.add(i);
 			}
 		}
+		Position newP = new Position(originalRow, originalColumn);
+		//newP.print();
+		System.out.println("aaaaa");
+		//m_piece.moveTo(newP);
+		m_piece.m_pos = newP;
+		
+		boardMatrix[newRow][newColumn] = null;
+		boardMatrix[originalRow][originalColumn] = m_piece;
+		
+		System.out.println("ANIMES");
+		boardMatrix[originalRow][originalColumn].m_pos.print();
+		m_piece.m_pos.print();
+		System.out.println("FIM ANIMES");
+		updateAllPossiblePositions();
+		
+		int invPos;
+		System.out.println("Size stuff " + invalidPositions.size() + "Second stff" + m_piece.possiblePositions.size());
+		for(int i = 0; i < invalidPositions.size(); i++)
+		{
+			invPos = invalidPositions.get(i);
+			m_piece.possiblePositions.remove(invPos);
+		}
+
 		
 		String descriptor = 'r' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn());
 		
@@ -117,15 +176,6 @@ public class Board extends Observable {
 		}
 		
 		
-		// Wont let the player move other pieces than his king when at check
-		if(myPiece.getColor() == Controller.getInstance().getCheck()) {
-			System.out.println("EU N SOU REI");
-			if(!myPiece.equals(friendlyKing))
-				return false;
-			else if (pieceMoved)
-				Controller.getInstance().setCheck(0);
-		}
-		
 		// If the movement is possible and the game hasn't ended (checkmate) the movement will occur
 		if(pieceMoved && Controller.getInstance().getCheckMate() == 0) {
 			myPiece.hasMoved();
@@ -133,6 +183,7 @@ public class Board extends Observable {
 			int row = myPiece.getM_pos().getRow();
 			int col = myPiece.getM_pos().getColumn();
 			String descriptor = "";
+			
 			//Castle case
 			if(myPiece instanceof King)
 			{
@@ -178,15 +229,11 @@ public class Board extends Observable {
 			boardMatrix[piece.getRow()][piece.getColumn()] = null;
 			boardMatrix[row][col] = myPiece;
 			
-			for(int i = 1; i < 9; i++) {
-	            for(int j = 1; j < 9; j++) {
-	            	if(boardMatrix[i][j] != null)
-	            		boardMatrix[i][j].updatePossiblePositions();
-	            }
-			}
+			updateAllPossiblePositions();
 			
-			
-			if(checkKingPossiblePos(enemyKing)){
+			//removeKingCheckedPositions(enemyKing);
+		
+			if(isPositionAtCheck(enemyKing.getM_pos(), -1*enemyKing.getColor())){
 				descriptor += 'y' + Integer.toString(enemyKing.getM_pos().getRow()) 
 				                  + Integer.toString(enemyKing.getM_pos().getColumn());
 				
@@ -194,9 +241,12 @@ public class Board extends Observable {
 				
 				if(enemyKing.possiblePositions.isEmpty())
 				{
-					System.out.println("XEQUE MATE " + friendlyKing.getColor() + " GANHOU");
+					Controller.getInstance().setCheckMate(friendlyKing.getColor());
+					descriptor += 'X' + Integer.toString(friendlyKing.getColor());
 				}
 			}
+			else
+				Controller.getInstance().setCheck(0);
 			
 			descriptor += '\0';
 			this.setChanged();
@@ -211,9 +261,41 @@ public class Board extends Observable {
 		return false;
 	}
 	
+	private void updateAllPossiblePositions() {
+		for(int i = 1; i < 9; i++) {
+            for(int j = 1; j < 9; j++) {
+            	if(boardMatrix[i][j] != null)
+            		boardMatrix[i][j].updatePossiblePositions();
+            }
+		}
+	}
 	
-	private boolean checkKingPossiblePos(Piece king) {
-		boolean kingIsAtCheck = false;
+	private boolean isPositionAtCheck(Position pos, int enemyColor) {
+		ArrayList<Position> otherPositions = null;
+		Piece otherPiece = null;
+		
+		for(int i = 1; i < 9; i++) {
+			for(int j = 1; j < 9; j++) {
+				otherPiece = boardMatrix[i][j];
+				
+				if(otherPiece != null && otherPiece.getColor() == enemyColor) {
+					if(otherPiece instanceof Pawn)
+						otherPositions = ((Pawn) otherPiece).attackPositions;
+					else
+						otherPositions = otherPiece.possiblePositions;
+					
+					for (Position otherPos : otherPositions) {
+						if(pos.isEqual(otherPos))
+							return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private void removeKingCheckedPositions(Piece king) {
 		ArrayList<Position> otherPositions = null;
 		Piece otherPiece = null;
 		
@@ -233,20 +315,12 @@ public class Board extends Observable {
 								king.possiblePositions.remove(k);
 							}
 						}
-						
-						if(king.getM_pos().isEqual(otherPos)) {
-							kingIsAtCheck = true;
-						}
 					}
 				}
 			}
 		}
-		
-		return kingIsAtCheck;
 	}
-	
-	private void checkForCheck(Piece king){
-	}
+
 	/* Checks the state of the passed square
 	 * Returns 0 : the sqrPos is empty
 	 * Returns 1 : the sqrPos has a white piece
@@ -364,15 +438,6 @@ public class Board extends Observable {
 			updateAllPossiblePositions();
 		}
 	}
-	
-	private void updateAllPossiblePositions() {
-        for(int i = 1; i < 9; i++) {
-            for(int j = 1; j < 9; j++) {
-                if(boardMatrix[i][j] != null)
-                    boardMatrix[i][j].updatePossiblePositions();
-            }
-        }
-    }
 	
 	
 	public String getGameString()

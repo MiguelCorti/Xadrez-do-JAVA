@@ -33,6 +33,8 @@ public abstract class Piece {
 	public boolean moveTo(Position pos){
 		/*for(Position p : possiblePositions)
 			p.print();*/
+		System.out.println("ANIMES2");
+		pos.print();
 		if(checkMovementTo(pos)) {
 			m_pos = pos;
 			
