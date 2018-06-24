@@ -103,8 +103,12 @@ public class Board extends Observable {
 			String descriptor = 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
 			                        + Integer.toString(row) + Integer.toString(col);
 			
-			if((row == 8 && myPiece.getColor() == -1) || (row == 1 && myPiece.getColor() == 1)){
-				descriptor += 'P';
+			if((row == 8 && myPiece.getColor() == -1) || (row == 1 && myPiece.getColor() == 1))
+			{
+				if(myPiece instanceof Pawn)
+				{
+					descriptor += 'P' + Integer.toString(row) + Integer.toString(col);
+				}
 			}
 			
 			
@@ -186,6 +190,28 @@ public class Board extends Observable {
 			return 0;
 		}
 		return boardMatrix[sqrPos.getRow()][sqrPos.getColumn()].getColor();
+	}
+	
+	
+	public void promotion(String promoteTo, int row, int col)
+	{
+		
+		switch(promoteTo)
+		{
+			case "Cavalo":
+				boardMatrix[row][col] = new Knight(row, col, -Controller.getInstance().getTurn());
+				break;
+			case "Bispo":
+				boardMatrix[row][col] = new Bishop(row, col, -Controller.getInstance().getTurn());
+				break;
+			case "Torre":
+				boardMatrix[row][col] = new Rook(row, col, -Controller.getInstance().getTurn());
+				break;
+			case "Dama":
+				boardMatrix[row][col] = new Queen(row, col, -Controller.getInstance().getTurn());
+				break;
+		}
+		
 	}
 	
 	

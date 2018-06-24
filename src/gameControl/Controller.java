@@ -56,6 +56,11 @@ public class Controller {
 		}
 	}
 	
+	public void promotion(String promoteTo, int row, int col)
+	{
+		Board.getBoard().promotion(promoteTo, row, col);
+	}
+	
 	public int getTurn()
 	{
 		return turn;
