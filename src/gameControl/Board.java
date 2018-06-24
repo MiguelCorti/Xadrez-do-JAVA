@@ -119,25 +119,23 @@ public class Board extends Observable {
 			}
 		}
 		Position newP = new Position(originalRow, originalColumn);
-		//newP.print();
-		System.out.println("aaaaa");
-		//m_piece.moveTo(newP);
+		
 		m_piece.m_pos = newP;
 		
 		boardMatrix[newRow][newColumn] = null;
 		boardMatrix[originalRow][originalColumn] = m_piece;
 		
-		System.out.println("ANIMES");
 		boardMatrix[originalRow][originalColumn].m_pos.print();
-		m_piece.m_pos.print();
-		System.out.println("FIM ANIMES");
+		
 		updateAllPossiblePositions();
 		
 		int invPos;
 		System.out.println("Size stuff " + invalidPositions.size() + "Second stff" + m_piece.possiblePositions.size());
-		for(int i = 0; i < invalidPositions.size(); i++)
+		for(int i = invalidPositions.size() - 1; i >= 0 ; i--)
 		{
 			invPos = invalidPositions.get(i);
+			System.out.println("Tamanho do possPos " + m_piece.possiblePositions.size());
+			System.out.println("Posicao do inv: " + invPos);
 			m_piece.possiblePositions.remove(invPos);
 		}
 
@@ -438,15 +436,6 @@ public class Board extends Observable {
 			updateAllPossiblePositions();
 		}
 	}
-	
-	private void updateAllPossiblePositions() {
-        for(int i = 1; i < 9; i++) {
-            for(int j = 1; j < 9; j++) {
-                if(boardMatrix[i][j] != null)
-                    boardMatrix[i][j].updatePossiblePositions();
-            }
-        }
-    }
 	
 	// Aux function for printing the board on the console
 	private void printBoardMatrix()

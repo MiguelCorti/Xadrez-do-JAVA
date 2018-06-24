@@ -70,7 +70,7 @@ public class GameView extends JPanel implements Observer {
 	            			repaint();
 	            		}
 	            		
-	            		if(returnValue == -1 && Controller.getInstance().getCheck() == 0){
+	            		if(returnValue == -1){
 	            			i = clickedPos.getRow();
 	                		j = clickedPos.getColumn();
 	                		

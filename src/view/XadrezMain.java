@@ -23,7 +23,7 @@ import gameControl.Board;
 public class XadrezMain {
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame(); 
 		frame.setSize(615, 640);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GameView gv = new GameView(600);

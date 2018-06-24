@@ -33,7 +33,7 @@ public class Controller {
 	*  Return values:
 	*     1, all right
 	*     0, forbidden move
-	*     -1, piece does not match turn
+	*     -1, changing the selected piece
 	*/
 	public int mouseClicked(Position clickPos, Position selectedPiece, int clickType)
 	{
@@ -45,7 +45,7 @@ public class Controller {
 						turn = turn * (-1);
 						return 1;
 					}
-					
+
 					return 0;
 				}
 				return -1;
