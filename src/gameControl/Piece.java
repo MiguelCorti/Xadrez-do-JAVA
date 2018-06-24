@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public abstract class Piece {
 	protected Position m_pos;
 	private int m_color;
+	private boolean hasMoved;
 	
 	ArrayList<Position> possiblePositions = new ArrayList<Position>();
 	
@@ -14,6 +15,7 @@ public abstract class Piece {
 		m_pos.setRow(row);
 		m_pos.setColumn(column);
 		m_color = color;
+		hasMoved = false;
 	}
 
 	public abstract void updatePossiblePositions();
@@ -29,8 +31,8 @@ public abstract class Piece {
 	
 	
 	public boolean moveTo(Position pos){
-		for(Position p : possiblePositions)
-			p.print();
+		/*for(Position p : possiblePositions)
+			p.print();*/
 		if(checkMovementTo(pos)) {
 			m_pos = pos;
 			
@@ -48,7 +50,7 @@ public abstract class Piece {
 	}
 
 	public void setColor(int color) {
-		this.m_color = color;
+		m_color = color;
 	}
 	
 	public Position getM_pos() {
@@ -56,7 +58,17 @@ public abstract class Piece {
 	}
 
 	public void setM_pos(Position pos) {
-		this.m_pos = pos;
+		m_pos = pos;
+	}
+	
+	public void hasMoved()
+	{
+		hasMoved = true;
+	}
+	
+	public boolean getHasMoved()
+	{
+		return hasMoved;
 	}
 	
 }
