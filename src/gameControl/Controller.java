@@ -8,6 +8,10 @@ public class Controller {
 	
 	private int turn = 1;
 	
+	private int check = 0;
+	
+	private int checkMate = 0;
+	
 	public static Controller getInstance()
 	{
 		if(ctrl == null)
@@ -27,33 +31,36 @@ public class Controller {
 	*     
 	*  Return values:
 	*     1, all right
-	*     0, unforbidden move
-	*     -1, changed the piece
+	*     0, forbidden move
+	*     -1, piece does not match turn
 	*/
 	public int mouseClicked(Position clickPos, Position selectedPiece, int clickType)
 	{
-		if(clickType == 1)
-		{
-			if(Board.getBoard().sqrState(clickPos) != turn )
-				if(Board.getBoard().click(clickPos, selectedPiece))
-				{
-					turn = turn * (-1);
-					return 1;
-				}
-				else
+		if(checkMate == 0) {
+			
+			if(clickType == 1){
+				if(Board.getBoard().sqrState(clickPos) != turn ){
+					if(Board.getBoard().click(clickPos, selectedPiece)){
+						turn = turn * (-1);
+						return 1;
+					}
+					
 					return 0;
-			return -1;
-		}
-		else
-		{
+				}
+				return -1;
+			}
+
 			if(Board.getBoard().sqrState(selectedPiece) == turn )
 			{
-				Board.getBoard().selectedPiece(selectedPiece);
-				return 1;		
+				if(Board.getBoard().selectedPiece(selectedPiece))
+					return 1;
+				return 0;
 			}
 			
-			return 0;			
+			return 0;
 		}
+		
+		return 0;
 	}
 	
 	public void promotion(String promoteTo, int row, int col)
@@ -64,5 +71,21 @@ public class Controller {
 	public int getTurn()
 	{
 		return turn;
+	}
+
+	public int getCheck() {
+		return check;
+	}
+
+	public void setCheck(int check) {
+		this.check = check;
+	}
+
+	public int getCheckMate() {
+		return checkMate;
+	}
+
+	public void setCheckMate(int checkMate) {
+		this.checkMate = checkMate;
 	}
 }

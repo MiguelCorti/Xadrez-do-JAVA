@@ -54,21 +54,26 @@ public class GameView extends JPanel implements Observer {
                
             	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
             	clickedPos.print();
-            	if(pieceIsSelected)
-            	{
+            	
+            	if(pieceIsSelected){
             		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
-            		if( returnValue != 1)
-            		{
-            			nullifySquareColor();
+            		
+            		if( returnValue != 1){
+            			if(Controller.getInstance().getCheck() != 0) {
+            				nullifySquareColor();
+            				squareColor[selectedPiecePos.getRow()][selectedPiecePos.getColumn()] = Color.YELLOW;
+            			}
+            			else
+            				nullifySquareColor();
+            			
             			repaint();
             		}
-            		if(returnValue == -1)
-            		{
+            		
+            		if(returnValue == -1 && Controller.getInstance().getCheck() == 0){
             			i = clickedPos.getRow();
                 		j = clickedPos.getColumn();
                 		
-                		if(imagesBoard[i][j] != null)
-                		{
+                		if(imagesBoard[i][j] != null){
                 			pieceIsSelected = true;
                 			selectedPiecePos = clickedPos;
                 			Controller.getInstance().mouseClicked(null, selectedPiecePos, 0);
@@ -127,6 +132,11 @@ public class GameView extends JPanel implements Observer {
 					square = new Position(Character.getNumericValue(descriptor[i+1]), Character.getNumericValue(descriptor[i+2]));
 					
 					squareColor[square.getRow()][square.getColumn()] = Color.RED;
+					break;
+				case 'y':
+					square = new Position(Character.getNumericValue(descriptor[i+1]), Character.getNumericValue(descriptor[i+2]));
+					
+					squareColor[square.getRow()][square.getColumn()] = Color.YELLOW;
 					break;
 				case 'P':
 					int row = Character.getNumericValue(descriptor[i+1]);
@@ -219,10 +229,10 @@ public class GameView extends JPanel implements Observer {
 		
 		repaint();
 	}
-
+	
 	private void nullifySquareColor(){
 		for(int i = 1; i < 9; i++)
-			for(int j = 1; j < 9; j++) 			
+			for(int j = 1; j < 9; j++) 
 				squareColor[i][j] = null;
 	}
 	private void initializeImages(){

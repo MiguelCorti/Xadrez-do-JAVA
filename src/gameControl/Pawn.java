@@ -1,7 +1,11 @@
 package gameControl;
 
-public class Pawn extends Piece{
+import java.util.ArrayList;
 
+public class Pawn extends Piece{
+	
+	ArrayList<Position> attackPositions = new ArrayList<Position>();
+	
 	public Pawn(int row, int column, int color) {
 		super(row, column, color);
 		setInitialPossiblePositions();
@@ -41,6 +45,7 @@ public class Pawn extends Piece{
 		p = new Position();
 		if(p.set(m_pos.getRow() - getColor(), m_pos.getColumn() + 1))
 		{
+			attackPositions.add(p);
 			if(Board.getBoard().sqrState(p) == (getColor()*(-1)))
 			{
 				possiblePositions.add(p);
@@ -50,6 +55,7 @@ public class Pawn extends Piece{
 		p = new Position();
 		if(p.set(m_pos.getRow() - getColor(), m_pos.getColumn() - 1))
 		{
+			attackPositions.add(p);
 			if(Board.getBoard().sqrState(p) == (getColor()*(-1)))
 			{
 				possiblePositions.add(p);

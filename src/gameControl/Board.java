@@ -1,5 +1,6 @@
 package gameControl;
 
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class Board extends Observable {
@@ -7,7 +8,6 @@ public class Board extends Observable {
 	private Piece[][] boardMatrix = new Piece[9][9];
 	
 	private static Board board = null;
-
 	
 	private Board()
 	{
@@ -63,8 +63,26 @@ public class Board extends Observable {
 		return board;
 	}
 	
-	public void selectedPiece(Position piece) {
+	public boolean selectedPiece(Position piece) {
 		Piece m_piece = boardMatrix[piece.getRow()][piece.getColumn()];
+		Piece friendlyKing = null;
+		
+		for(int i = 1; i < 9; i++) {
+            for(int j = 1; j < 9; j++) {
+            	Piece tempKing = boardMatrix[i][j];
+            	if(tempKing != null && tempKing instanceof King) {
+            		if(tempKing.getColor() == m_piece.getColor())
+            			friendlyKing = tempKing;
+            	}
+            }
+		}
+		
+		if(m_piece.getColor() == Controller.getInstance().getCheck()) {
+			if(!m_piece.equals(friendlyKing)) {
+				return false;
+			}
+		}
+		
 		String descriptor = 'r' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn());
 		
 		for(Position p : m_piece.possiblePositions) {
@@ -76,6 +94,8 @@ public class Board extends Observable {
 		this.setChanged();
 		this.notifyObservers(descriptor);
 		this.clearChanged();
+		
+		return true;
 	}
 	
 	public boolean click(Position click, Position piece) {
@@ -97,7 +117,17 @@ public class Board extends Observable {
 		}
 		
 		
-		if(pieceMoved) {
+		// Wont let the player move other pieces than his king when at check
+		if(myPiece.getColor() == Controller.getInstance().getCheck()) {
+			System.out.println("EU N SOU REI");
+			if(!myPiece.equals(friendlyKing))
+				return false;
+			else if (pieceMoved)
+				Controller.getInstance().setCheck(0);
+		}
+		
+		// If the movement is possible and the game hasn't ended (checkmate) the movement will occur
+		if(pieceMoved && Controller.getInstance().getCheckMate() == 0) {
 			int row = myPiece.getM_pos().getRow();
 			int col = myPiece.getM_pos().getColumn();
 			String descriptor = 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
@@ -123,9 +153,12 @@ public class Board extends Observable {
 	            }
 			}
 			
+			
 			if(checkKingPossiblePos(enemyKing)){
-				descriptor += 'r' + Integer.toString(enemyKing.getM_pos().getRow()) 
+				descriptor += 'y' + Integer.toString(enemyKing.getM_pos().getRow()) 
 				                  + Integer.toString(enemyKing.getM_pos().getColumn());
+				
+				Controller.getInstance().setCheck(enemyKing.getColor());
 				
 				if(enemyKing.possiblePositions.isEmpty())
 				{
@@ -133,24 +166,23 @@ public class Board extends Observable {
 				}
 			}
 			
-			//checkForCheck(enemyKing);
-			
 			descriptor += '\0';
 			this.setChanged();
 			this.notifyObservers(descriptor);
 			this.clearChanged();
 			
-			return pieceMoved;
+			return true;
 		}
 		
-		System.out.printf("Nao foi possivel mover a peça de (%d, %d) para (%d, %d)\n", click.getRow(), click.getColumn(), piece.getRow(), piece.getColumn());
+		//System.out.printf("Nao foi possivel mover a peça de (%d, %d) para (%d, %d)\n", click.getRow(), click.getColumn(), piece.getRow(), piece.getColumn());
 		
-		return pieceMoved;
+		return false;
 	}
 	
 	
 	private boolean checkKingPossiblePos(Piece king) {
 		boolean kingIsAtCheck = false;
+		ArrayList<Position> otherPositions = null;
 		Piece otherPiece = null;
 		
 		for(int i = 1; i < 9; i++) {
@@ -158,7 +190,12 @@ public class Board extends Observable {
 				otherPiece = boardMatrix[i][j];
 				
 				if(otherPiece != null && otherPiece.getColor() == -1*king.getColor()) {
-					for (Position otherPos : otherPiece.possiblePositions) {
+					if(otherPiece instanceof Pawn)
+						otherPositions = ((Pawn) otherPiece).attackPositions;
+					else
+						otherPositions = otherPiece.possiblePositions;
+					
+					for (Position otherPos : otherPositions) {
 						for(int k = 0; k < king.possiblePositions.size(); k++) {
 							if(king.possiblePositions.get(k).isEqual(otherPos)){
 								king.possiblePositions.remove(k);
