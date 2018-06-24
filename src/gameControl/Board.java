@@ -117,15 +117,6 @@ public class Board extends Observable {
 		}
 		
 		
-		// Wont let the player move other pieces than his king when at check
-		if(myPiece.getColor() == Controller.getInstance().getCheck()) {
-			System.out.println("EU N SOU REI");
-			if(!myPiece.equals(friendlyKing))
-				return false;
-			else if (pieceMoved)
-				Controller.getInstance().setCheck(0);
-		}
-		
 		// If the movement is possible and the game hasn't ended (checkmate) the movement will occur
 		if(pieceMoved && Controller.getInstance().getCheckMate() == 0) {
 			myPiece.hasMoved();
@@ -185,8 +176,9 @@ public class Board extends Observable {
 	            }
 			}
 			
-			
-			if(checkKingPossiblePos(enemyKing)){
+			removeKingCheckedPositions(enemyKing);
+		
+			if(isPositionAtCheck(enemyKing.getM_pos(), -1*enemyKing.getColor())){
 				descriptor += 'y' + Integer.toString(enemyKing.getM_pos().getRow()) 
 				                  + Integer.toString(enemyKing.getM_pos().getColumn());
 				
@@ -194,7 +186,8 @@ public class Board extends Observable {
 				
 				if(enemyKing.possiblePositions.isEmpty())
 				{
-					System.out.println("XEQUE MATE " + friendlyKing.getColor() + " GANHOU");
+					Controller.getInstance().setCheckMate(friendlyKing.getColor());
+					descriptor += 'X' + Integer.toString(friendlyKing.getColor());
 				}
 			}
 			
@@ -211,9 +204,32 @@ public class Board extends Observable {
 		return false;
 	}
 	
+	private boolean isPositionAtCheck(Position pos, int enemyColor) {
+		ArrayList<Position> otherPositions = null;
+		Piece otherPiece = null;
+		
+		for(int i = 1; i < 9; i++) {
+			for(int j = 1; j < 9; j++) {
+				otherPiece = boardMatrix[i][j];
+				
+				if(otherPiece != null && otherPiece.getColor() == enemyColor) {
+					if(otherPiece instanceof Pawn)
+						otherPositions = ((Pawn) otherPiece).attackPositions;
+					else
+						otherPositions = otherPiece.possiblePositions;
+					
+					for (Position otherPos : otherPositions) {
+						if(pos.isEqual(otherPos))
+							return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
 	
-	private boolean checkKingPossiblePos(Piece king) {
-		boolean kingIsAtCheck = false;
+	private void removeKingCheckedPositions(Piece king) {
 		ArrayList<Position> otherPositions = null;
 		Piece otherPiece = null;
 		
@@ -233,16 +249,10 @@ public class Board extends Observable {
 								king.possiblePositions.remove(k);
 							}
 						}
-						
-						if(king.getM_pos().isEqual(otherPos)) {
-							kingIsAtCheck = true;
-						}
 					}
 				}
 			}
 		}
-		
-		return kingIsAtCheck;
 	}
 	
 	private void checkForCheck(Piece king){

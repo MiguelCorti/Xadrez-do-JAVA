@@ -31,6 +31,7 @@ import gameControl.Rook;
 public class GameView extends JPanel implements Observer {
 	private int SIZE;
 	private int SQUARESIDE;
+	private boolean popupIsUp = false;
 	
 	private Image[][] imagesBoard = new Image[9][9];
 	private Color[][] squareColor = new Color[9][9];
@@ -51,51 +52,52 @@ public class GameView extends JPanel implements Observer {
 			Position selectedPiecePos;
 			
             public void mouseClicked(MouseEvent e) {
-               
-            	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
-            	clickedPos.print();
-            	
-            	if(pieceIsSelected){
-            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
-            		
-            		if( returnValue != 1){
-            			if(Controller.getInstance().getCheck() != 0) {
-            				nullifySquareColor();
-            				squareColor[selectedPiecePos.getRow()][selectedPiecePos.getColumn()] = Color.YELLOW;
-            			}
-            			else
-            				nullifySquareColor();
-            			
-            			repaint();
-            		}
-            		
-            		if(returnValue == -1 && Controller.getInstance().getCheck() == 0){
-            			i = clickedPos.getRow();
-                		j = clickedPos.getColumn();
-                		
-                		if(imagesBoard[i][j] != null){
-                			pieceIsSelected = true;
-                			selectedPiecePos = clickedPos;
-                			Controller.getInstance().mouseClicked(null, selectedPiecePos, 0);
-                		}
-            		}
-            		else
-            			pieceIsSelected = false;
-            	}
-            	else
-            	{
-            		i = clickedPos.getRow();
-            		j = clickedPos.getColumn();
-            		
-            		if(imagesBoard[i][j] != null)
-            		{
-            			
-            			selectedPiecePos = clickedPos;
-            			if(Controller.getInstance().mouseClicked(null, selectedPiecePos, 0) == 1)
-            				pieceIsSelected = true;
-            			else
-            				pieceIsSelected = false;
-            		}
+            	if(Controller.getInstance().getCheckMate() == 0 && !popupIsUp) {
+	            	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
+	            	clickedPos.print();
+	            	
+	            	if(pieceIsSelected){
+	            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
+	            		
+	            		if( returnValue != 1){
+	            			if(Controller.getInstance().getCheck() != 0) {
+	            				nullifySquareColor();
+	            				squareColor[selectedPiecePos.getRow()][selectedPiecePos.getColumn()] = Color.YELLOW;
+	            			}
+	            			else
+	            				nullifySquareColor();
+	            			
+	            			repaint();
+	            		}
+	            		
+	            		if(returnValue == -1 && Controller.getInstance().getCheck() == 0){
+	            			i = clickedPos.getRow();
+	                		j = clickedPos.getColumn();
+	                		
+	                		if(imagesBoard[i][j] != null){
+	                			pieceIsSelected = true;
+	                			selectedPiecePos = clickedPos;
+	                			Controller.getInstance().mouseClicked(null, selectedPiecePos, 0);
+	                		}
+	            		}
+	            		else
+	            			pieceIsSelected = false;
+	            	}
+	            	else
+	            	{
+	            		i = clickedPos.getRow();
+	            		j = clickedPos.getColumn();
+	            		
+	            		if(imagesBoard[i][j] != null)
+	            		{
+	            			
+	            			selectedPiecePos = clickedPos;
+	            			if(Controller.getInstance().mouseClicked(null, selectedPiecePos, 0) == 1)
+	            				pieceIsSelected = true;
+	            			else
+	            				pieceIsSelected = false;
+	            		}
+	            	}
             	}
             }
         });
@@ -138,11 +140,30 @@ public class GameView extends JPanel implements Observer {
 					
 					squareColor[square.getRow()][square.getColumn()] = Color.YELLOW;
 					break;
+				case 'X':
+					JPopupMenu winPopup;
+					int victoryColor = Character.getNumericValue(descriptor[i+1]);
+					String winText = "";
+					
+					winPopup = new JPopupMenu();
+                    
+					if(victoryColor == 1)
+						winText = "AS BRANCAS GANHARAM! PARABÉNS.";
+					else if(victoryColor == -1)
+						winText = "AS PRETAS GANHARAM! PARABÉNS.";
+				
+					winPopup.add(new JMenuItem(winText));
+					winPopup.show(getRootPane( ), SIZE/2, SIZE/2);
+					
+					break;
 				case 'P':
 					int row = Character.getNumericValue(descriptor[i+1]);
 			  		int col = Character.getNumericValue(descriptor[i+2]);
 			  		
+			  		popupIsUp = true;
+			  		
 					ActionListener menuListener = new ActionListener() {
+						
 						  public void actionPerformed(ActionEvent event) {
 							  switch(event.getActionCommand())
 							  {
@@ -192,6 +213,7 @@ public class GameView extends JPanel implements Observer {
 							  }
 							  
 							  Controller.getInstance().promotion(event.getActionCommand(), row, col);
+							  popupIsUp = false;
 							  repaint();
 						  }
 						};
