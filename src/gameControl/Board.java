@@ -85,7 +85,7 @@ public class Board extends Observable {
             	}
             }
 		}
-		
+		/*
 		friendlyKingChecked = isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor());
 		
 		ArrayList<Position> tempPossiblePos = new ArrayList<Position>(m_piece.possiblePositions);
@@ -107,13 +107,13 @@ public class Board extends Observable {
 			updateAllPossiblePositions();
 			
 			tempBool = isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor());
-			
+			*/
 			 
 			/* When (friendlyKingChecked == false && tempBool == true) means this movement places the king at check, so it should be invalid (will remove the pos)
 			 * When (friendlyKingChecked == true && tempBool == true) this means this movement changes nothing about the check state, thus shouldn't be valid (will remove)
 			 * When (friendlyKingChecked == true && tempBool == false) means this movement will make the king unchecked, so it should be available (will do nothing)
 			 * When (friendlyKingChecked == false && tempBool == false) means there's no check and wont make the king checked, so it's the usual case and should be available (will do nothing)
-			 */
+			 *//*
 			if((friendlyKingChecked == false && tempBool == true) || (friendlyKingChecked == true && tempBool == true)) { // this means this movement places the king at check, so it should be invalid
 				invalidPositions.add(i);
 			}
@@ -138,7 +138,7 @@ public class Board extends Observable {
 			System.out.println("Posicao do inv: " + invPos);
 			m_piece.possiblePositions.remove(invPos);
 		}
-
+		*/
 		
 		String descriptor = 'r' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn());
 		
@@ -211,6 +211,8 @@ public class Board extends Observable {
 				}
 			}
 			
+			//setting descriptor
+			
 			descriptor += 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
 			                        + Integer.toString(row) + Integer.toString(col);
 			
@@ -268,7 +270,7 @@ public class Board extends Observable {
 		}
 	}
 	
-	private boolean isPositionAtCheck(Position pos, int enemyColor) {
+	public boolean isPositionAtCheck(Position pos, int enemyColor) {
 		ArrayList<Position> otherPositions = null;
 		Piece otherPiece = null;
 		
