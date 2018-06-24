@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -13,6 +15,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -126,9 +129,88 @@ public class GameView extends JPanel implements Observer {
 					squareColor[square.getRow()][square.getColumn()] = Color.RED;
 					break;
 				case 'P':
-					JPopupMenu promotionPopup;
-					promotionPopup = new JPopupMenu();
-					System.out.println("PROMACAO");
+					int row = Character.getNumericValue(descriptor[i+1]);
+			  		int col = Character.getNumericValue(descriptor[i+2]);
+			  		
+					ActionListener menuListener = new ActionListener() {
+						  public void actionPerformed(ActionEvent event) {
+							  switch(event.getActionCommand())
+							  {
+							  	case "Cavalo":
+							  		
+									try {
+										if(Controller.getInstance().getTurn() == -1)
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\b_cavalo.gif"));
+										else
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\p_cavalo.gif"));
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+							  		
+							  		break;
+							  	case "Bispo":
+							  		try {
+										if(Controller.getInstance().getTurn() == -1)
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\b_bispo.gif"));
+										else
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\p_bispo.gif"));
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+							  		
+							  		break;
+							  	case "Torre":
+							  		try {
+										if(Controller.getInstance().getTurn() == -1)
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\b_torre.gif"));
+										else
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\p_torre.gif"));
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+							  		break;
+							  	case "Dama":
+							  		try {
+										if(Controller.getInstance().getTurn() == -1)
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\b_dama.gif"));
+										else
+											imagesBoard[row][col] = ImageIO.read(new File("assets\\p_dama.gif"));
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+							  		break;
+							  }
+							  
+							  Controller.getInstance().promotion(event.getActionCommand(), row, col);
+							  repaint();
+						  }
+						};
+
+					JPopupMenu popup;
+
+					popup = new JPopupMenu();
+                    // add menu items to popup
+					JMenuItem knightItem = new JMenuItem("Cavalo");
+					knightItem.addActionListener(menuListener);
+					
+					JMenuItem bishopItem = new JMenuItem("Bispo");
+					bishopItem.addActionListener(menuListener);
+					
+					JMenuItem rookItem = new JMenuItem("Torre");
+					rookItem.addActionListener(menuListener);
+					
+					JMenuItem queenItem = new JMenuItem("Dama");
+					queenItem.addActionListener(menuListener);
+					
+					popup.add(knightItem);
+					popup.add(bishopItem);
+					popup.add(rookItem);
+					popup.add(queenItem);
+					
+					popup.show(getRootPane( ), 0, 0);
+					System.out.println("PROMOCAO");
+					
+					
 					break;
 			}
 			
