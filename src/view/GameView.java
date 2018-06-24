@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -53,7 +54,7 @@ public class GameView extends JPanel implements Observer {
             public void mouseClicked(MouseEvent e) {
                
             	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
-            	clickedPos.print();
+            	//clickedPos.print();
             	
             	if(pieceIsSelected){
             		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
@@ -285,6 +286,72 @@ public class GameView extends JPanel implements Observer {
 		for(int i = 3; i < 7; i++) {
 			for(int j = 1; j < 9; j++) {
 				imagesBoard[i][j] = null;
+			}
+		}
+	}
+	
+	public void continueGame(ArrayList<String> gamePieces)
+	{
+		//Clearing the imgBoard
+		for(int i = 1; i < 9; i++) {
+			for(int j = 1; j < 9; j++) {
+				imagesBoard[i][j] = null;
+			}
+		}
+		
+		for(int i=1; i<gamePieces.size(); i++)
+		{
+			
+			int row = Integer.parseInt(gamePieces.get(i).substring(1, 2));
+			int col = Integer.parseInt(gamePieces.get(i).substring(2, 3));
+			int color = Integer.parseInt(gamePieces.get(i).substring(3, 4));
+			if(color==0)
+				color = -1;
+			
+			try {
+				switch(gamePieces.get(i).substring(0, 1))
+				{
+					case "k":
+						if(color==1)
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\b_rei.gif"));
+						else
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\p_rei.gif"));
+						break;
+					case "q":
+						if(color==1)
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\b_dama.gif"));
+						else
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\p_dama.gif"));
+						break;
+					case "r":
+						if(color==1)
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\b_torre.gif"));
+						else
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\p_torre.gif"));
+						break;
+					case "b":
+						if(color==1)
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\b_bispo.gif"));
+						else
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\p_bispo.gif"));
+						break;
+					case "n":
+						if(color==1)
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\b_cavalo.gif"));
+						else
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\p_cavalo.gif"));
+						break;
+					case "p":
+						if(color==1)
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\b_peao.gif"));
+						else
+							imagesBoard[row][col] = ImageIO.read(new File("assets\\p_peao.gif"));
+						break;
+				}
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package gameControl;
 
+import java.util.ArrayList;
 import java.util.Observer;
 
 public class Controller {
@@ -87,5 +88,10 @@ public class Controller {
 
 	public void setCheckMate(int checkMate) {
 		this.checkMate = checkMate;
+	}
+	
+	public void setTurn(int rTurn)
+	{
+		turn = rTurn;
 	}
 }
