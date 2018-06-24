@@ -32,6 +32,7 @@ public class GameView extends JPanel implements Observer {
 	private int SIZE;
 	private int SQUARESIDE;
 	private boolean popupIsUp = false;
+	private Position checkedKingPos;
 	
 	private Image[][] imagesBoard = new Image[9][9];
 	private Color[][] squareColor = new Color[9][9];
@@ -60,12 +61,10 @@ public class GameView extends JPanel implements Observer {
 	            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
 	            		
 	            		if( returnValue != 1){
+	            			nullifySquareColor();
 	            			if(Controller.getInstance().getCheck() != 0) {
-	            				nullifySquareColor();
-	            				squareColor[selectedPiecePos.getRow()][selectedPiecePos.getColumn()] = Color.YELLOW;
+	            				squareColor[checkedKingPos.getRow()][checkedKingPos.getColumn()] = Color.YELLOW;
 	            			}
-	            			else
-	            				nullifySquareColor();
 	            			
 	            			repaint();
 	            		}
@@ -137,6 +136,9 @@ public class GameView extends JPanel implements Observer {
 					break;
 				case 'y':
 					square = new Position(Character.getNumericValue(descriptor[i+1]), Character.getNumericValue(descriptor[i+2]));
+					
+					if(Controller.getInstance().getCheck() != 0)
+						checkedKingPos = square;
 					
 					squareColor[square.getRow()][square.getColumn()] = Color.YELLOW;
 					break;
