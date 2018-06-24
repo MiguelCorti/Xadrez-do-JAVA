@@ -15,7 +15,6 @@ public class Rook extends Piece{
 		
 		possiblePositions.clear();
 
-		System.out.println("Rook pos:");
 		
 		// Adding all squares north of the piece
 		for(i = currentRow + 1; i < 9; i++)
@@ -25,7 +24,6 @@ public class Rook extends Piece{
 				if(Board.getBoard().sqrState(newPos) == this.getColor())
 					break;
 				
-				newPos.print();
 				possiblePositions.add(newPos);
 				
 				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
@@ -41,7 +39,6 @@ public class Rook extends Piece{
 				if(Board.getBoard().sqrState(newPos) == this.getColor())
 					break;
 				
-				newPos.print();
 				possiblePositions.add(newPos);
 				
 				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
@@ -57,7 +54,6 @@ public class Rook extends Piece{
 				if(Board.getBoard().sqrState(newPos) == this.getColor())
 					break;
 				
-				newPos.print();
 				possiblePositions.add(newPos);
 				
 				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
@@ -73,7 +69,6 @@ public class Rook extends Piece{
 				if(Board.getBoard().sqrState(newPos) == this.getColor())
 					break;
 				
-				newPos.print();
 				possiblePositions.add(newPos);
 				
 				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())

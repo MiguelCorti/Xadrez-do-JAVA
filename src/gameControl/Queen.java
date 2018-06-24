@@ -8,68 +8,145 @@ public class Queen extends Piece{
 
 	public void updatePossiblePositions()
 	{
+		possiblePositions.clear();
+
+		// As the queen is basically a mix between a bishop and a rook, we'll just reuse their codes
+		addAllRookPositions();
+		
+		addAllBishopPositions();
+		
+	}
+	
+	
+	// Same as the Rook code
+	private void addAllRookPositions(){
+		int currentRow = m_pos.getRow();
+		int currentColumn = m_pos.getColumn();
+		int i;
+		Position newPos = new Position();
+
+		
+		// Adding all squares north of the piece
+		for(i = currentRow + 1; i < 9; i++)
+		{
+			newPos = new Position();
+			if(newPos.set(i, currentColumn)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				possiblePositions.add(newPos);
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
+			}
+		}
+		
+		// Adding all squares south of the piece
+		for(i = currentRow - 1; i > 0; i--)
+		{
+			newPos = new Position();
+			if(newPos.set(i, currentColumn)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				possiblePositions.add(newPos);
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
+			}
+		}
+		
+		// Adding all squares east of the piece
+		for(i = currentColumn + 1; i < 9; i++)
+		{
+			newPos = new Position();
+			if(newPos.set(currentRow, i)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				possiblePositions.add(newPos);
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
+			}
+		}
+		
+		// Adding all squares west of the piece
+		for(i = currentColumn - 1; i > 0; i--)
+		{
+			newPos = new Position();
+			if(newPos.set(currentRow, i)) {
+				if(Board.getBoard().sqrState(newPos) == this.getColor())
+					break;
+				
+				possiblePositions.add(newPos);
+				
+				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+					break;
+			}
+		}
+	}
+	
+	// Same as the bishop code
+	private void addAllBishopPositions(){
 		int currentRow = m_pos.getRow();
 		int currentColumn = m_pos.getColumn();
 		int i;
 		Position newPos = new Position();
 		
-		possiblePositions.clear();
+		i = 1;
+		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) != this.getColor())
+		{
+			possiblePositions.add(newPos);
 
-		// Adding the possible straight positions
-		i = 1;
-		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(currentRow, i)) {
-			if(i != currentColumn) {
-				newPos = new Position();
-				possiblePositions.add(newPos);
-			}
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
+			newPos = new Position();
 			
 			i++;
 		}
 		
 		i = 1;
-		while(Board.getBoard().sqrState(newPos) == 0 && newPos.set(i, currentColumn)) {
+		newPos = new Position();
+		while(newPos.set(currentRow - i, currentColumn - i) && Board.getBoard().sqrState(newPos) != this.getColor())
+		{
+			possiblePositions.add(newPos);
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
 			
-			if(i != currentRow && Board.getBoard().sqrState(newPos) == 0)
-				newPos = new Position();
-				possiblePositions.add(newPos);
+			newPos = new Position();
 			
 			i++;
 		}
 		
-		
-		// Now adding the possible diagonal positions
 		i = 1;
-		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		newPos = new Position();
+		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) != this.getColor())
 		{
-			newPos = new Position();
 			possiblePositions.add(newPos);
-			i++;
-		}
-		
-		i = -1;
-		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
-		{
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
 			newPos = new Position();
-			possiblePositions.add(newPos);
-			i--;
-		}
-		
-		i = 1;
-		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) == 0)
-		{
-			newPos = new Position();
-			possiblePositions.add(newPos);
 			i++;
 		}
 		
 		i = 1;
-		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		newPos = new Position();
+		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) != this.getColor())
 		{
-			newPos = new Position();
 			possiblePositions.add(newPos);
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
+			newPos = new Position();
+			
 			i++;
 		}
 	}
-	
 	
 }

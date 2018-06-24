@@ -16,34 +16,56 @@ public class Bishop extends Piece{
 		possiblePositions.clear();
 		
 		i = 1;
-		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) != this.getColor())
 		{
-			newPos = new Position();
 			possiblePositions.add(newPos);
-			i++;
-		}
-		
-		i = -1;
-		while(newPos.set(currentRow + i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
-		{
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
 			newPos = new Position();
-			possiblePositions.add(newPos);
-			i--;
-		}
-		
-		i = 1;
-		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) == 0)
-		{
-			newPos = new Position();
-			possiblePositions.add(newPos);
+			
 			i++;
 		}
 		
 		i = 1;
-		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) == 0)
+		newPos = new Position();
+		while(newPos.set(currentRow - i, currentColumn - i) && Board.getBoard().sqrState(newPos) != this.getColor())
 		{
-			newPos = new Position();
 			possiblePositions.add(newPos);
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
+			newPos = new Position();
+			
+			i++;
+		}
+		
+		i = 1;
+		newPos = new Position();
+		while(newPos.set(currentRow + i, currentColumn - i) && Board.getBoard().sqrState(newPos) != this.getColor())
+		{
+			possiblePositions.add(newPos);
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
+			newPos = new Position();
+			i++;
+		}
+		
+		i = 1;
+		newPos = new Position();
+		while(newPos.set(currentRow - i, currentColumn + i) && Board.getBoard().sqrState(newPos) != this.getColor())
+		{
+			possiblePositions.add(newPos);
+
+			if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
+				break;
+			
+			newPos = new Position();
+			
 			i++;
 		}
 	}
