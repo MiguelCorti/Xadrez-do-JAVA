@@ -2,6 +2,10 @@ package gameControl;
 
 public class Bishop extends Piece{
 	
+	public Bishop(Bishop other) {
+		super(other);
+	}
+	
 	public Bishop(int row, int column, int color) {
 		super(row, column, color);
 	}

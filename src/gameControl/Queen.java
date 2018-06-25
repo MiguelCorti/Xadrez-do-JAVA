@@ -2,6 +2,10 @@ package gameControl;
 
 public class Queen extends Piece{	
 	
+	public Queen(Queen other) {
+		super(other);
+	}
+	
 	public Queen(int row, int column, int color) {
 		super(row, column, color);
 	}

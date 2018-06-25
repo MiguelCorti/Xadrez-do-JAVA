@@ -69,6 +69,7 @@ public class Board extends Observable {
 		int newRow = originalRow, newColumn = originalColumn;
 		int oldRow = originalRow, oldColumn = originalColumn;
 		
+		Piece destinationPiece = null;
 		Piece m_piece = boardMatrix[originalRow][originalColumn];
 		ArrayList<Integer> invalidPositions = new ArrayList<Integer>();
 		
@@ -93,12 +94,15 @@ public class Board extends Observable {
 		for(int i = 0; i < tempPossiblePos.size(); i++) {
 			Position p = tempPossiblePos.get(i);
 			
-			m_piece.moveTo(p);
+			m_piece.setM_pos(p);
 	
 			newRow = m_piece.getM_pos().getRow();
-			newColumn = m_piece.getM_pos().getColumn();
+			newColumn = m_piece.getM_pos().getColumn();		
 			
-			boardMatrix[oldRow][oldColumn] = null;
+			boardMatrix[oldRow][oldColumn] = destinationPiece;
+			// Placing the piece in the new possible position
+			destinationPiece = makeCopyOf(boardMatrix[newRow][newColumn]);
+			
 			boardMatrix[newRow][newColumn] = m_piece;
 			
 			oldRow = newRow;
@@ -107,7 +111,11 @@ public class Board extends Observable {
 			updateAllPossiblePositions();
 			
 			tempBool = isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor());
-			
+			if(m_piece instanceof Knight) {
+				System.out.print("Possible pos: ");
+				p.print();
+				System.out.println(" makes the king checked: " + tempBool);
+			}
 			 
 			/* When (friendlyKingChecked == false && tempBool == true) means this movement places the king at check, so it should be invalid (will remove the pos)
 			 * When (friendlyKingChecked == true && tempBool == true) this means this movement changes nothing about the check state, thus shouldn't be valid (will remove)
@@ -118,24 +126,18 @@ public class Board extends Observable {
 				invalidPositions.add(i);
 			}
 		}
-		Position newP = new Position(originalRow, originalColumn);
 		
-		m_piece.m_pos = newP;
+		m_piece.setM_pos(new Position(originalRow, originalColumn));
 		
-		boardMatrix[newRow][newColumn] = null;
+		boardMatrix[newRow][newColumn] = destinationPiece;
 		boardMatrix[originalRow][originalColumn] = m_piece;
-		
-		boardMatrix[originalRow][originalColumn].m_pos.print();
 		
 		updateAllPossiblePositions();
 		
 		int invPos;
-		System.out.println("Size stuff " + invalidPositions.size() + "Second stff" + m_piece.possiblePositions.size());
 		for(int i = invalidPositions.size() - 1; i >= 0 ; i--)
 		{
 			invPos = invalidPositions.get(i);
-			System.out.println("Tamanho do possPos " + m_piece.possiblePositions.size());
-			System.out.println("Posicao do inv: " + invPos);
 			m_piece.possiblePositions.remove(invPos);
 		}
 
@@ -229,9 +231,10 @@ public class Board extends Observable {
 			
 			updateAllPossiblePositions();
 			
-			//removeKingCheckedPositions(enemyKing);
-		
-			if(isPositionAtCheck(enemyKing.getM_pos(), -1*enemyKing.getColor())){
+			if(checkForDraw()) {
+				// Do something...
+			}
+			else if(isPositionAtCheck(enemyKing.getM_pos(), -1*enemyKing.getColor())){
 				descriptor += 'y' + Integer.toString(enemyKing.getM_pos().getRow()) 
 				                  + Integer.toString(enemyKing.getM_pos().getColumn());
 				
@@ -254,9 +257,26 @@ public class Board extends Observable {
 			return true;
 		}
 		
-		//System.out.printf("Nao foi possivel mover a peça de (%d, %d) para (%d, %d)\n", click.getRow(), click.getColumn(), piece.getRow(), piece.getColumn());
-		
 		return false;
+	}
+	
+	private Piece makeCopyOf(Piece copied) {
+		Piece copy = null;
+		
+		if(copied instanceof Pawn)
+			copy = new Pawn((Pawn)copied);
+		else if(copied instanceof King)
+			copy = new King((King)copied);
+		else if(copied instanceof Queen)
+			copy = new Queen((Queen)copied);
+		else if(copied instanceof Knight)
+			copy = new Knight((Knight)copied);
+		else if(copied instanceof Rook)
+			copy = new Rook((Rook)copied);
+		else if(copied instanceof Bishop)
+			copy = new Bishop((Bishop)copied);
+		
+		return copy;
 	}
 	
 	private void updateAllPossiblePositions() {
@@ -266,6 +286,18 @@ public class Board extends Observable {
             		boardMatrix[i][j].updatePossiblePositions();
             }
 		}
+	}
+	
+	private boolean checkForDraw() {
+		for(int i = 1; i < 9; i++) {
+            for(int j = 1; j < 9; j++) {
+            	if(boardMatrix[i][j] != null)
+            		if(!boardMatrix[i][j].possiblePositions.isEmpty())
+            			return false;
+            }
+		}
+		
+		return true;
 	}
 	
 	private boolean isPositionAtCheck(Position pos, int enemyColor) {

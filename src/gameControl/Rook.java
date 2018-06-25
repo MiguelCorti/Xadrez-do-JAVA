@@ -2,6 +2,10 @@ package gameControl;
 
 public class Rook extends Piece{
 	
+	public Rook(Rook other) {
+		super(other);
+	}
+	
 	public Rook(int row, int column, int color) {
 		super(row, column, color);
 	}
@@ -25,7 +29,7 @@ public class Rook extends Piece{
 					break;
 				
 				possiblePositions.add(newPos);
-				
+				//newPos.print();
 				if(Board.getBoard().sqrState(newPos) == -1*this.getColor())
 					break;
 			}

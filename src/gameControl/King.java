@@ -2,6 +2,9 @@ package gameControl;
 
 public class King extends Piece{
 
+	public King(King other) {
+		super(other);
+	}
 	
 	public King(int row, int column, int color) {
 		super(row, column, color);

@@ -35,7 +35,6 @@ import gameControl.Rook;
 public class GameView extends JPanel implements Observer {
 	private int SIZE;
 	private int SQUARESIDE;
-	private boolean popupIsUp = false;
 	private Position checkedKingPos;
 	
 	private Image[][] imagesBoard = new Image[9][9];
@@ -60,7 +59,7 @@ public class GameView extends JPanel implements Observer {
             public void mouseClicked(MouseEvent e) {
             	if(Controller.getInstance().getCheckMate() == 0 && e.getButton() == MouseEvent.BUTTON1) {
 	            	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
-	            	clickedPos.print();
+	            	//clickedPos.print();
 	            	
 	            	if(pieceIsSelected){
 	            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
@@ -191,8 +190,7 @@ public class GameView extends JPanel implements Observer {
 				case 'P':
 					int row = Character.getNumericValue(descriptor[i+1]);
 			  		int col = Character.getNumericValue(descriptor[i+2]);
-			  		
-			  		popupIsUp = true;
+			  	
 			  		
 					ActionListener menuListener = new ActionListener() {
 						
@@ -245,7 +243,6 @@ public class GameView extends JPanel implements Observer {
 							  }
 							  
 							  Controller.getInstance().promotion(event.getActionCommand(), row, col);
-							  popupIsUp = false;
 							  repaint();
 						  }
 						};

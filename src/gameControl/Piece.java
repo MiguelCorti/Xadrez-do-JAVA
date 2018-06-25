@@ -8,6 +8,14 @@ public abstract class Piece {
 	
 	ArrayList<Position> possiblePositions = new ArrayList<Position>();
 	
+	public Piece(Piece other) {
+		m_pos = other.m_pos;
+		m_color = other.m_color;
+		hasMoved = other.hasMoved;
+		
+		possiblePositions = other.possiblePositions;
+	}
+	
 	public Piece(int row, int column, int color)
 	{
 		m_pos = new Position();

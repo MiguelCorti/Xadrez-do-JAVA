@@ -6,6 +6,10 @@ public class Pawn extends Piece{
 	
 	ArrayList<Position> attackPositions = new ArrayList<Position>();
 	
+	public Pawn(Pawn other) {
+		super(other);
+		attackPositions = other.attackPositions;
+	}
 	public Pawn(int row, int column, int color) {
 		super(row, column, color);
 		setInitialPossiblePositions();

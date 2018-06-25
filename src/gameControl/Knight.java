@@ -1,7 +1,11 @@
 package gameControl;
 
 public class Knight extends Piece{
-
+	
+	public Knight(Knight other) {
+		super(other);
+	}
+	
 	public Knight(int row, int column, int color) {
 		super(row, column, color);
 		setInitialPossiblePositions();
