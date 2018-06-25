@@ -111,11 +111,13 @@ public class Board extends Observable {
 			updateAllPossiblePositions();
 			
 			tempBool = isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor());
+			
 			if(m_piece instanceof Knight) {
 				System.out.print("Possible pos: ");
 				p.print();
 				System.out.println(" makes the king checked: " + tempBool);
 			}
+
 			 
 			/* When (friendlyKingChecked == false && tempBool == true) means this movement places the king at check, so it should be invalid (will remove the pos)
 			 * When (friendlyKingChecked == true && tempBool == true) this means this movement changes nothing about the check state, thus shouldn't be valid (will remove)
@@ -140,7 +142,7 @@ public class Board extends Observable {
 			invPos = invalidPositions.get(i);
 			m_piece.possiblePositions.remove(invPos);
 		}
-
+		
 		
 		String descriptor = 'r' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn());
 		
@@ -213,6 +215,8 @@ public class Board extends Observable {
 				}
 			}
 			
+			//setting descriptor
+			
 			descriptor += 'p' + Integer.toString(piece.getRow()) + Integer.toString(piece.getColumn()) 
 			                        + Integer.toString(row) + Integer.toString(col);
 			
@@ -254,6 +258,7 @@ public class Board extends Observable {
 			this.notifyObservers(descriptor);
 			this.clearChanged();
 			
+			Controller.getInstance().changeTurn();
 			return true;
 		}
 		
@@ -288,6 +293,7 @@ public class Board extends Observable {
 		}
 	}
 	
+
 	private boolean checkForDraw() {
 		for(int i = 1; i < 9; i++) {
             for(int j = 1; j < 9; j++) {
@@ -299,8 +305,8 @@ public class Board extends Observable {
 		
 		return true;
 	}
-	
-	private boolean isPositionAtCheck(Position pos, int enemyColor) {
+
+	public boolean isPositionAtCheck(Position pos, int enemyColor) {
 		ArrayList<Position> otherPositions = null;
 		Piece otherPiece = null;
 		
@@ -324,7 +330,6 @@ public class Board extends Observable {
 		
 		return false;
 	}
-	
 
 	/* Checks the state of the passed square
 	 * Returns 0 : the sqrPos is empty
@@ -347,16 +352,16 @@ public class Board extends Observable {
 		switch(promoteTo)
 		{
 			case "Cavalo":
-				boardMatrix[row][col] = new Knight(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Knight(row, col, Controller.getInstance().getTurn());
 				break;
 			case "Bispo":
-				boardMatrix[row][col] = new Bishop(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Bishop(row, col, Controller.getInstance().getTurn());
 				break;
 			case "Torre":
-				boardMatrix[row][col] = new Rook(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Rook(row, col, Controller.getInstance().getTurn());
 				break;
 			case "Dama":
-				boardMatrix[row][col] = new Queen(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Queen(row, col, Controller.getInstance().getTurn());
 				break;
 		}
 		
@@ -370,6 +375,7 @@ public class Board extends Observable {
 		{
 			if(!temp.getHasMoved())
 			{
+				
 				return true;
 			}
 		}
@@ -440,7 +446,9 @@ public class Board extends Observable {
 						boardMatrix[row][col].hasMoved();
 					break;
 			}
+			Controller.getInstance().setTurn(-rTurn);
 			updateAllPossiblePositions();
+			Controller.getInstance().setTurn(rTurn);
 		}
 	}
 	

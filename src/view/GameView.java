@@ -71,7 +71,7 @@ public class GameView extends JPanel implements Observer {
 	            				squareColor[checkedKingPos.getRow()][checkedKingPos.getColumn()] = Color.YELLOW;
 	            			}
 	            			
-	            			repaint();
+	            			repaint(); 
 	            		}
 	            		
 	            		if(returnValue == -1){
