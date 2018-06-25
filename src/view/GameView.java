@@ -59,7 +59,6 @@ public class GameView extends JPanel implements Observer {
             public void mouseClicked(MouseEvent e) {
             	if(Controller.getInstance().getCheckMate() == 0 && e.getButton() == MouseEvent.BUTTON1) {
 	            	Position clickedPos = mapCoordToMatrix(e.getY(), e.getX());
-	            	//clickedPos.print();
 	            	
 	            	if(pieceIsSelected){
 	            		int returnValue = Controller.getInstance().mouseClicked(clickedPos, selectedPiecePos, 1);
@@ -185,6 +184,12 @@ public class GameView extends JPanel implements Observer {
 				
 					winPopup.add(new JMenuItem(winText));
 					winPopup.show(getRootPane( ), SIZE/2, SIZE/2);
+					
+					break;
+				case 'D':
+					JPopupMenu drawPopup = new JPopupMenu();
+					drawPopup.add(new JMenuItem("Que Pena! Deu empate..."));
+					drawPopup.show(getRootPane( ), SIZE/2, SIZE/2);
 					
 					break;
 				case 'P':

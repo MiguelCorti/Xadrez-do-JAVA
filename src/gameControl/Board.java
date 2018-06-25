@@ -71,6 +71,7 @@ public class Board extends Observable {
 		
 		Piece destinationPiece = null;
 		Piece m_piece = boardMatrix[originalRow][originalColumn];
+		m_piece.updatePossiblePositions();
 		ArrayList<Integer> invalidPositions = new ArrayList<Integer>();
 		
 		Piece friendlyKing = null;
@@ -228,15 +229,14 @@ public class Board extends Observable {
 				}
 			}
 			
-			
-			
 			boardMatrix[piece.getRow()][piece.getColumn()] = null;
 			boardMatrix[row][col] = myPiece;
 			
 			updateAllPossiblePositions();
 			
 			if(checkForDraw()) {
-				// Do something...
+				descriptor += 'D';
+				Controller.getInstance().setCheckMate(friendlyKing.getColor());
 			}
 			else if(isPositionAtCheck(enemyKing.getM_pos(), -1*enemyKing.getColor())){
 				descriptor += 'y' + Integer.toString(enemyKing.getM_pos().getRow()) 
@@ -297,7 +297,7 @@ public class Board extends Observable {
 	private boolean checkForDraw() {
 		for(int i = 1; i < 9; i++) {
             for(int j = 1; j < 9; j++) {
-            	if(boardMatrix[i][j] != null)
+            	if(boardMatrix[i][j] != null && boardMatrix[i][j].getColor() == Controller.getInstance().getTurn())
             		if(!boardMatrix[i][j].possiblePositions.isEmpty())
             			return false;
             }
