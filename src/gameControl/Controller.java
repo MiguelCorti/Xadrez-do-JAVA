@@ -45,7 +45,7 @@ public class Controller {
 			if(clickType == 1){
 				if(Board.getBoard().sqrState(clickPos) != turn ){
 					if(Board.getBoard().click(clickPos, selectedPiece)){
-						turn = turn * (-1);
+						
 						return 1;
 					}
 
@@ -116,5 +116,10 @@ public class Controller {
 	public void setTurn(int rTurn)
 	{
 		turn = rTurn;
+	}
+	
+	public void changeTurn()
+	{
+		turn = turn * (-1);
 	}
 }

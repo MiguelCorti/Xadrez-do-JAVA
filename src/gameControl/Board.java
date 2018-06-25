@@ -253,6 +253,7 @@ public class Board extends Observable {
 			this.notifyObservers(descriptor);
 			this.clearChanged();
 			
+			Controller.getInstance().changeTurn();
 			return true;
 		}
 		
@@ -294,7 +295,6 @@ public class Board extends Observable {
 		
 		return false;
 	}
-	
 
 	/* Checks the state of the passed square
 	 * Returns 0 : the sqrPos is empty
@@ -317,16 +317,16 @@ public class Board extends Observable {
 		switch(promoteTo)
 		{
 			case "Cavalo":
-				boardMatrix[row][col] = new Knight(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Knight(row, col, Controller.getInstance().getTurn());
 				break;
 			case "Bispo":
-				boardMatrix[row][col] = new Bishop(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Bishop(row, col, Controller.getInstance().getTurn());
 				break;
 			case "Torre":
-				boardMatrix[row][col] = new Rook(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Rook(row, col, Controller.getInstance().getTurn());
 				break;
 			case "Dama":
-				boardMatrix[row][col] = new Queen(row, col, -Controller.getInstance().getTurn());
+				boardMatrix[row][col] = new Queen(row, col, Controller.getInstance().getTurn());
 				break;
 		}
 		
@@ -340,6 +340,7 @@ public class Board extends Observable {
 		{
 			if(!temp.getHasMoved())
 			{
+				
 				return true;
 			}
 		}
@@ -410,7 +411,9 @@ public class Board extends Observable {
 						boardMatrix[row][col].hasMoved();
 					break;
 			}
+			Controller.getInstance().setTurn(-rTurn);
 			updateAllPossiblePositions();
+			Controller.getInstance().setTurn(rTurn);
 		}
 	}
 	

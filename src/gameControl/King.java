@@ -54,6 +54,7 @@ public class King extends Piece{
 		//Castle case
 		if(!this.getHasMoved())
 		{
+			
 			//Short castle
 			
 			int turn = Controller.getInstance().getTurn();
@@ -66,6 +67,7 @@ public class King extends Piece{
 			
 			Position temp2 = new Position();
 			temp2.set(m_pos.getRow(), m_pos.getColumn()+3);
+			
 			if(Board.getBoard().sqrState(p) == 0 && !Board.getBoard().isPositionAtCheck(p, turn))
 			{
 				if(Board.getBoard().sqrState(temp) == 0 && !Board.getBoard().isPositionAtCheck(temp, turn))
