@@ -151,11 +151,39 @@ public class Board extends Observable {
 			descriptor += 'g' + Integer.toString(p.getRow()) + Integer.toString(p.getColumn()) ;
 		}
 		
+
+
+		if(checkForDraw()) {
+			
+			if(isPositionAtCheck(friendlyKing.getM_pos(), -1*friendlyKing.getColor())){
+				descriptor += 'y' + Integer.toString(friendlyKing.getM_pos().getRow()) 
+				                  + Integer.toString(friendlyKing.getM_pos().getColumn());
+				
+				Controller.getInstance().setCheck(friendlyKing.getColor());
+				
+				if(friendlyKing.possiblePositions.isEmpty())
+				{
+					Controller.getInstance().setCheckMate(-friendlyKing.getColor());
+					descriptor += 'X' + Integer.toString(-friendlyKing.getColor());
+				}
+			}
+			else
+			{
+				descriptor += 'D';
+				Controller.getInstance().setCheckMate(friendlyKing.getColor());
+			}
+		}
+		else
+			Controller.getInstance().setCheck(0);
+		
+		
 		descriptor += '\0';
 		
 		this.setChanged();
 		this.notifyObservers(descriptor);
 		this.clearChanged();
+		
+		
 		
 		return true;
 	}
@@ -234,31 +262,14 @@ public class Board extends Observable {
 			
 			updateAllPossiblePositions();
 			
-			if(checkForDraw()) {
-				descriptor += 'D';
-				Controller.getInstance().setCheckMate(friendlyKing.getColor());
-			}
-			else if(isPositionAtCheck(enemyKing.getM_pos(), -1*enemyKing.getColor())){
-				descriptor += 'y' + Integer.toString(enemyKing.getM_pos().getRow()) 
-				                  + Integer.toString(enemyKing.getM_pos().getColumn());
-				
-				Controller.getInstance().setCheck(enemyKing.getColor());
-				
-				if(enemyKing.possiblePositions.isEmpty())
-				{
-					Controller.getInstance().setCheckMate(friendlyKing.getColor());
-					descriptor += 'X' + Integer.toString(friendlyKing.getColor());
-				}
-			}
-			else
-				Controller.getInstance().setCheck(0);
+			Controller.getInstance().changeTurn();
 			
 			descriptor += '\0';
 			this.setChanged();
 			this.notifyObservers(descriptor);
 			this.clearChanged();
 			
-			Controller.getInstance().changeTurn();
+			
 			return true;
 		}
 		
@@ -298,8 +309,13 @@ public class Board extends Observable {
 		for(int i = 1; i < 9; i++) {
             for(int j = 1; j < 9; j++) {
             	if(boardMatrix[i][j] != null && boardMatrix[i][j].getColor() == Controller.getInstance().getTurn())
+            	{
+            		System.out.println("ENTROUAQUIEIN e o anime é: " +!boardMatrix[i][j].possiblePositions.isEmpty());
+            		System.out.println(boardMatrix[i][j].possiblePositions.size());
             		if(!boardMatrix[i][j].possiblePositions.isEmpty())
             			return false;
+            		
+            	}
             }
 		}
 		
